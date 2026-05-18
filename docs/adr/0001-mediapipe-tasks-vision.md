@@ -12,38 +12,59 @@ The spike requires a browser-based ML library that can detect body
 data (e.g. hand landmarks, full-body pose, gestures) from a webcam
 stream in real time. The final library will expose these as web
 events, so the underlying ML stack should cover all three
-modalities consistently and run with acceptable performance
-on mid-range hardware.
+modalities consistently and run with acceptable performance.
 
-## Considered Options:
+## Considered Options
 
-- **MediaPipe Tasks Vision**: Google's current vision pipeline,
-  unified API across hands, pose, gestures.
-- **TensorFlow.js**: runs similar underlying models but
-  through TF.js wrappers in separate packages.
+- **MediaPipe Tasks Vision** (`@mediapipe/tasks-vision`)
+- **TensorFlow.js** (`@tensorflow-models/pose-detection`,
+  `hand-pose-detection`)
 
 ## Decision
 
-We use **MediaPipe Tasks Vision** (`@mediapipe/tasks-vision`).
+We use **MediaPipe Tasks Vision**.
 
 ## Pros and Cons of the Options
 
-**Positive**
+### MediaPipe Tasks Vision
 
-- One API surface across `HandLandmarker`, `PoseLandmarker`,
-  and `GestureRecognizer` -> the future library can expose all
-  three with consistent semantics.
-- Pretrained `GestureRecognizer` with 7 gestures
-  (Open_Palm, Closed_Fist, Pointing_Up, Thumb_Up/Down,
-  Victory, ILoveYou) means we can ship meaningful high-level
-  events without training custom models.
-- WASM + GPU delegate gives stable 50 FPS in early tests
+**Pros**
 
-**Negative**
+- One API surface across `HandLandmarker`, `PoseLandmarker` and
+  `GestureRecognizer` -> the future library can expose all three
+  modalities with consistent semantics.
+- Pretrained `GestureRecognizer` with 7 gestures (Open_Palm,
+  Closed_Fist, Pointing_Up, Thumb_Up, Thumb_Down, Victory,
+  ILoveYou) means meaningful high-level events can ship without
+  training custom models.
+- WASM runtime with GPU delegate gives stable 50 FPS for Pose
+  and ~30 FPS for Hand / Gesture in early tests.
+- Actively maintained by Google, clean TypeScript types,
+  thorough documentation.
 
-- Multi-person pose requires the heavier model variant; the
-  Lite variant we currently use is single-person only.
-- Custom gestures require MediaPipe Model Maker, which is a
-  Python pipeline outside the browser stack.
-- Bundle is not tiny, WASM runtime and model files are
-  loaded from CDN at runtime.
+**Cons**
+
+- Multi-person pose requires the heavier model variants; the
+  Lite variant currently used is single-person only.
+- Custom gestures require MediaPipe Model Maker, a Python
+  pipeline outside the browser stack — the 7 built-in classes
+  are the practical ceiling without that investment.
+- Bundle is not tiny: WASM runtime and model files are loaded
+  from CDN at runtime, adding a few seconds of startup latency
+  on first use.
+
+### TensorFlow.js
+
+**Pros**
+
+- More flexible for custom models — TF.js can load arbitrary
+  models that we train or fine-tune ourselves.
+- Larger ecosystem of pretrained models beyond body tracking
+
+**Cons**
+
+- Separate packages with different API conventions
+- No pretrained gesture classifier comparable to MediaPipe's
+  `GestureRecognizer` -> we would have to train one ourselves
+- More setup boilerplate per model (backend selection, model
+  loading, etc.) than the unified MediaPipe API.
