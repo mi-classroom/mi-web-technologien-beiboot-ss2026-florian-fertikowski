@@ -12,6 +12,7 @@ import { usePinchGesture } from "./hooks/use-pinch-gesture";
 import { useSwipeGesture } from "./hooks/use-swipe-gesture";
 import { PinchIndicator } from "./components/pinch-indicator";
 import type { HandLandmarkerResult } from "@mediapipe/tasks-vision";
+import { GestureFeedback } from "./components/gesture-feedback";
 
 /**
  * Desired webcam configuration. Using `ideal` gives the camera room
@@ -30,7 +31,9 @@ const WEBCAM_CONSTRAINTS: MediaStreamConstraints = {
 function App() {
   const [mode, setMode] = useState<ModeName>("hands");
   const [status, setStatus] = useState("Initializing...");
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
+  const feedbackTimeoutRef = useRef<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const debugPanelRef = useRef<DebugPanelHandle>(null);
 
@@ -38,13 +41,20 @@ function App() {
   const { processFrame: processPinchFrame, state: pinchState } =
     usePinchGesture({
       onEvent: (event) => {
-        console.log("Pinch event:", event);
+        if (event.type === "pinch-start") {
+          showFeedback("PINCH", false);
+        } else if (event.type === "pinch-end") {
+          const seconds = (event.durationMs / 1000).toFixed(1);
+          showFeedback(`PINCH (${seconds}s)`, true);
+        }
       },
     });
 
   const { processFrame: processSwipeFrame } = useSwipeGesture({
     onEvent: (event) => {
-      console.log("Swipe event:", event);
+      const label =
+        event.type === "swipe-left" ? "< SWIPE RIGHT" : "SWIPE LEFT >";
+      showFeedback(label, true);
     },
   });
 
@@ -72,6 +82,22 @@ function App() {
     onStatusChange: setStatus,
   });
 
+  const showFeedback = useCallback((message: string, autoHide: boolean) => {
+    if (feedbackTimeoutRef.current !== null) {
+      window.clearTimeout(feedbackTimeoutRef.current);
+      feedbackTimeoutRef.current = null;
+    }
+
+    setFeedbackMessage(message);
+
+    if (autoHide) {
+      feedbackTimeoutRef.current = window.setTimeout(() => {
+        setFeedbackMessage(null);
+        feedbackTimeoutRef.current = null;
+      }, 1500);
+    }
+  }, []);
+
   const displayStatus = error
     ? `Error: ${error}`
     : !ready
@@ -88,6 +114,7 @@ function App() {
               ref={canvasRef}
               status={displayStatus}
             />
+            <GestureFeedback message={feedbackMessage} />
             <PinchIndicator state={pinchState} />
           </div>
           <ModeSwitcher mode={mode} onModeChange={setMode} />
