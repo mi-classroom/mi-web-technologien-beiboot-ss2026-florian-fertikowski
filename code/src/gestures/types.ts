@@ -18,6 +18,16 @@ export type GestureEvent =
       handIndex: number;
       timestamp: number;
       durationMs: number;
+    }
+  | {
+      type: "swipe-left";
+      handIndex: number;
+      timestamp: number;
+    }
+  | {
+      type: "swipe-right";
+      handIndex: number;
+      timestamp: number;
     };
 
 /**

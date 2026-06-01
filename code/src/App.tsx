@@ -9,6 +9,7 @@ import {
 import { VideoStage } from "./components/video-stage.tsx";
 import { ModeSwitcher } from "./components/mode-switcher.tsx";
 import { usePinchGesture } from "./hooks/use-pinch-gesture";
+import { useSwipeGesture } from "./hooks/use-swipe-gesture";
 import { PinchIndicator } from "./components/pinch-indicator";
 import type { HandLandmarkerResult } from "@mediapipe/tasks-vision";
 
@@ -34,20 +35,31 @@ function App() {
   const debugPanelRef = useRef<DebugPanelHandle>(null);
 
   const { videoRef, ready, error, resolution } = useWebcam(WEBCAM_CONSTRAINTS);
-  const { processFrame, state: pinchState } = usePinchGesture({
+  const { processFrame: processPinchFrame, state: pinchState } =
+    usePinchGesture({
+      onEvent: (event) => {
+        console.log("Pinch event:", event);
+      },
+    });
+
+  const { processFrame: processSwipeFrame } = useSwipeGesture({
     onEvent: (event) => {
-      console.log("Pinch event:", event);
+      console.log("Swipe event:", event);
     },
   });
 
   const handleResult = useCallback(
     (result: unknown, timestamp: number) => {
-      // Pinch only works for hand modes
-      if (mode === "hands" || mode === "gesture") {
-        processFrame(result as HandLandmarkerResult | null, timestamp);
+      // Hand-based gestures only run in the hands mode. Gesture
+      // mode also has hand landmarks, but in the spike we keep the
+      // modes cleanly separated so it's obvious what triggers what.
+      if (mode === "hands") {
+        const r = result as HandLandmarkerResult | null;
+        processPinchFrame(r, timestamp);
+        processSwipeFrame(r, timestamp);
       }
     },
-    [mode, processFrame],
+    [mode, processPinchFrame, processSwipeFrame],
   );
 
   useDetectionLoop({

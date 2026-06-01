@@ -5,6 +5,8 @@
 
 export { PinchDetector } from "./pinch-detector";
 export type { PinchDetectorOptions } from "./pinch-detector";
+export { SwipeDetector } from "./swipe-detector";
+export type { SwipeDetectorOptions } from "./swipe-detector";
 export type {
   GestureDetector,
   GestureEvent,
