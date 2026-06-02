@@ -86,6 +86,8 @@ and that the motion is horizontally dominant over vertical motion.
 
 - The detector fires when the gesture is *complete*, not when it starts, so there is no equivalent of Pinch's "candidate" phase for UI feedback during the gesture
 
+---
+
 ### Reference landmark
 
 #### Wrist (chosen)
@@ -122,6 +124,8 @@ and that the motion is horizontally dominant over vertical motion.
 
 - Computationally heavier
 - The improvement over wrist is small relative to the wrist's inherent stability
+
+---
 
 ### Qualifying criteria
 
@@ -185,13 +189,3 @@ Per frame, for each detected hand:
 6. If both hands qualify in the same frame, pick the one with the larger dxNorm and ignore the other.
 7. Fire swipe-left or swipe-right based on sign of dx.
 8. Clear all hand buffers and set a cooldown on all hands.
-
-## Default parameters
-
-| Parameter                   | Default | Rationale                                                                                                                                             |
-|-----------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `bufferSizeMs`              | 300     | Initial estimate; testing showed real swipes span ~500 ms and 600 ms gives a more robust window. The final tested value is in gesture-observations.md |
-| `minDistanceHandLengths`    | 0.6     | Initial estimate; in near-range testing the hand leaves the frame before reaching 1.5 HL, so the value was lowered. See gesture-observations.md       |
-| `minSpeedHandLengthsPerSec` | 3.0     | A deliberate swipe is brisk; slow drifts should not qualify                                                                                           |
-| `minStraightness`           | 0.7     | Rejects clear wobble while accepting natural minor wiggle                                                                                             |
-| `cooldownMs`                | 400     | Long enough to ride out the post-swipe return motion of the hand                                                                                      |

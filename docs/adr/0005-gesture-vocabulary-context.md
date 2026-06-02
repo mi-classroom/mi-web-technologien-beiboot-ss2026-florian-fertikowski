@@ -89,6 +89,8 @@ Entries are written at the level of generic UI component interactions, with an a
 
 - Stays abstract without real application context
 
+---
+
 ### Vocabulary level
 
 #### Domain-specific

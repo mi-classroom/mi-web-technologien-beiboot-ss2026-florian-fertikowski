@@ -77,6 +77,8 @@ All parameters (thresholds, dwell time, smoothing factor) are configurable via t
 
 - Requires four landmarks to be present, not two; if any are missing the frame is skipped
 
+---
+
 ### Jitter handling
 
 #### No smoothing
@@ -112,6 +114,8 @@ All parameters (thresholds, dwell time, smoothing factor) are configurable via t
 - Requires storing the last N frames per hand
 - Less standard for sub-second smoothing of continuous signals
 - EMA was sufficient in testing; no need to escalate
+
+---
 
 ### Flicker prevention
 
