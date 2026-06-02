@@ -53,7 +53,7 @@ function App() {
   const { processFrame: processSwipeFrame } = useSwipeGesture({
     onEvent: (event) => {
       const label =
-        event.type === "swipe-left" ? "< SWIPE RIGHT" : "SWIPE LEFT >";
+        event.type === "swipe-left" ? "SWIPE RIGHT >" : "< SWIPE LEFT";
       showFeedback(label, true);
     },
   });
