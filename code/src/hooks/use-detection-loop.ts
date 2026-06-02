@@ -1,10 +1,6 @@
 /**
  * manages the requestAnimationFrame loop that calls a detector per frame,
  * draws the result onto the canvas, and forwards performance stats to the caller.
- *
- * Two design decisions that are non-obvious in a React real-time
- * setup and worth explaining in a code review:
- *
  */
 
 import { useEffect, useRef } from "react";
@@ -29,6 +25,12 @@ interface UseDetectionLoopOptions {
    * DOM to avoid triggering React re-renders (no useState).
    */
   onFrame: (stats: FrameStats) => void;
+  /**
+   * Called once per frame with the raw detection result and the
+   * current timestamp. Used by gesture detectors that
+   * need the raw landmarks
+   */
+  onResult?: (result: unknown, timestamp: number) => void;
   /** Optional: status messages. */
   onStatusChange?: (status: string) => void;
 }
@@ -39,6 +41,7 @@ export function useDetectionLoop({
   mode,
   active,
   onFrame,
+  onResult,
   onStatusChange,
 }: UseDetectionLoopOptions): void {
   // Refs mirror the props so the detection effect does not restart
@@ -46,11 +49,13 @@ export function useDetectionLoop({
   // updated in the effect below.
   const onFrameRef = useRef(onFrame);
   const onStatusChangeRef = useRef(onStatusChange);
+  const onResultRef = useRef(onResult);
 
   // Sync refs after every render
   useEffect(() => {
     onFrameRef.current = onFrame;
     onStatusChangeRef.current = onStatusChange;
+    onResultRef.current = onResult;
   });
 
   useEffect(() => {
@@ -114,6 +119,8 @@ export function useDetectionLoop({
         const t0 = performance.now();
         const result = detector.detect(video, now);
         const t1 = performance.now();
+
+        onResultRef.current?.(result, now);
 
         // Clear canvas every frame, otherwise overlays accumulate.
         ctx.clearRect(0, 0, canvas.width, canvas.height);

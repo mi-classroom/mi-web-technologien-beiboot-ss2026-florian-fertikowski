@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { ModeName } from "./detectors";
 import { useWebcam } from "./hooks/use-webcam.ts";
 import { useDetectionLoop } from "./hooks/use-detection-loop.ts";
@@ -8,6 +8,11 @@ import {
 } from "./components/debug-panel.tsx";
 import { VideoStage } from "./components/video-stage.tsx";
 import { ModeSwitcher } from "./components/mode-switcher.tsx";
+import { usePinchGesture } from "./hooks/use-pinch-gesture";
+import { useSwipeGesture } from "./hooks/use-swipe-gesture";
+import { PinchIndicator } from "./components/pinch-indicator";
+import type { HandLandmarkerResult } from "@mediapipe/tasks-vision";
+import { GestureFeedback } from "./components/gesture-feedback";
 
 /**
  * Desired webcam configuration. Using `ideal` gives the camera room
@@ -26,11 +31,46 @@ const WEBCAM_CONSTRAINTS: MediaStreamConstraints = {
 function App() {
   const [mode, setMode] = useState<ModeName>("hands");
   const [status, setStatus] = useState("Initializing...");
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
 
+  const feedbackTimeoutRef = useRef<number | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const debugPanelRef = useRef<DebugPanelHandle>(null);
 
   const { videoRef, ready, error, resolution } = useWebcam(WEBCAM_CONSTRAINTS);
+  const { processFrame: processPinchFrame, state: pinchState } =
+    usePinchGesture({
+      onEvent: (event) => {
+        if (event.type === "pinch-start") {
+          showFeedback("PINCH", false);
+        } else if (event.type === "pinch-end") {
+          const seconds = (event.durationMs / 1000).toFixed(1);
+          showFeedback(`PINCH (${seconds}s)`, true);
+        }
+      },
+    });
+
+  const { processFrame: processSwipeFrame } = useSwipeGesture({
+    onEvent: (event) => {
+      const label =
+        event.type === "swipe-left" ? "SWIPE RIGHT >" : "< SWIPE LEFT";
+      showFeedback(label, true);
+    },
+  });
+
+  const handleResult = useCallback(
+    (result: unknown, timestamp: number) => {
+      // Hand-based gestures only run in the hands mode. Gesture
+      // mode also has hand landmarks, but in the spike we keep the
+      // modes cleanly separated so it's obvious what triggers what.
+      if (mode === "hands") {
+        const r = result as HandLandmarkerResult | null;
+        processPinchFrame(r, timestamp);
+        processSwipeFrame(r, timestamp);
+      }
+    },
+    [mode, processPinchFrame, processSwipeFrame],
+  );
 
   useDetectionLoop({
     videoRef,
@@ -38,8 +78,25 @@ function App() {
     mode,
     active: ready,
     onFrame: (stats) => debugPanelRef.current?.update(stats),
+    onResult: handleResult,
     onStatusChange: setStatus,
   });
+
+  const showFeedback = useCallback((message: string, autoHide: boolean) => {
+    if (feedbackTimeoutRef.current !== null) {
+      window.clearTimeout(feedbackTimeoutRef.current);
+      feedbackTimeoutRef.current = null;
+    }
+
+    setFeedbackMessage(message);
+
+    if (autoHide) {
+      feedbackTimeoutRef.current = window.setTimeout(() => {
+        setFeedbackMessage(null);
+        feedbackTimeoutRef.current = null;
+      }, 1500);
+    }
+  }, []);
 
   const displayStatus = error
     ? `Error: ${error}`
@@ -51,12 +108,16 @@ function App() {
     <div className="flex min-h-screen flex-col">
       <main className="grid flex-1 gap-4 p-6 lg:grid-cols-[1fr_360px]">
         <section className="flex flex-col gap-3">
+          <div className={"relative"}>
+            <VideoStage
+              videoRef={videoRef}
+              ref={canvasRef}
+              status={displayStatus}
+            />
+            <GestureFeedback message={feedbackMessage} />
+            <PinchIndicator state={pinchState} />
+          </div>
           <ModeSwitcher mode={mode} onModeChange={setMode} />
-          <VideoStage
-            videoRef={videoRef}
-            ref={canvasRef}
-            status={displayStatus}
-          />
         </section>
         <DebugPanel ref={debugPanelRef} resolution={resolution} />
       </main>
