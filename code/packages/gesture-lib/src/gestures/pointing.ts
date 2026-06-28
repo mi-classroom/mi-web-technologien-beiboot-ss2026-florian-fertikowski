@@ -4,34 +4,6 @@
  * Recognises a deliberate pointing pose — index finger extended,
  * middle/ring/pinky curled — and emits a continuous cursor stream
  * while the pose is held.
- *
- * Three event types, unlike the binary start/end pairs of Pinch
- * and Pause:
- *
- *   pointing-start  — fired once when the pose is first confirmed
- *   pointing-move   — fired on every frame the pose stays active
- *   pointing-end    — fired when the pose ends
- *
- * The continuous move-event stream is the reason this detector
- * exists as a distinct shape in the API. It exercises the library's
- * ability to model gestures with a streaming output, alongside the
- * discrete-event gestures (Pinch, Swipe, Pause).
- *
- * State machine:
- *
- *   IDLE       --(pose matches activate)----> CANDIDATE
- *   CANDIDATE  --(held for dwellTimeMs)-----> ACTIVE      (fire pointing-start)
- *   CANDIDATE  --(pose no longer matches)---> IDLE
- *   ACTIVE     --(every frame)--------------> ACTIVE      (fire pointing-move)
- *   ACTIVE     --(pose no longer matches)---> IDLE        (fire pointing-end)
- *
- * Only one hand at a time drives the gesture; if both hands point
- * simultaneously, the first to enter ACTIVE owns it.
- *
- * The reported position is the index-tip, smoothed across frames
- * with an EMA filter to absorb landmark jitter (a recurring issue
- * with extended fingertips — see Issue #1 observations). The
- * smoothing factor is configurable; passing 1.0 disables it.
  */
 
 import type {

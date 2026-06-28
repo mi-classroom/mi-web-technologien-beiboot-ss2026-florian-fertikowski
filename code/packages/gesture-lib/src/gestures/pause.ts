@@ -4,28 +4,6 @@
  * Recognises an open-palm hold as a deliberate pause/resume signal:
  * all four fingers extended, thumb abducted, held for a dwell
  * duration.
- *
- * Detection is bottom-up from hand landmarks, not from MediaPipe's
- * built-in gesture classifier. This keeps the library independent
- * of any specific classifier model and applies the same posture
- * definition consistently (the helpers in utils/finger-postures
- * are shared with PointingGesture).
- *
- * State machine (mirrors PinchGesture):
- *
- *   IDLE       --(posture matches activate criteria)----> CANDIDATE
- *   CANDIDATE  --(held for dwellTimeMs)-------------------> ACTIVE   (fire pause-start)
- *   CANDIDATE  --(posture no longer matches release)------> IDLE
- *   ACTIVE     --(posture no longer matches release)------> IDLE     (fire pause-end)
- *
- * Hysteresis: activation requires all fingers extended above the
- * `activateExtendedThreshold` (strict). Release happens when any
- * finger drops below `releaseExtendedThreshold` (permissive).
- *
- * Only one hand at a time can drive Pause. If multiple hands show
- * the posture simultaneously, the first hand to enter ACTIVE owns
- * the gesture; other hands are ignored until it ends. This matches
- * the semantic of a binary app state (paused / not paused).
  */
 
 import type {
