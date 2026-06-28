@@ -4,8 +4,8 @@
  * individual files.
  */
 
-import type { Detector, ModeName } from "./types";
-import { PoseDetector } from "./pose-recognition";
+import type { Detector, ModeName } from "./types.ts";
+import { PoseDetector } from "./pose-recognition.ts";
 import { GestureDetector } from "./gesture-recognition.ts";
 import { HandsDetector } from "./hand-recognition.ts";
 

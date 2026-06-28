@@ -8,10 +8,10 @@
  * active: solid filled circle in a contrast color
  */
 
-import type { PinchDetectorState } from "../gestures";
+import type { PinchState } from "gesture-lib/gestures";
 
 interface PinchIndicatorProps {
-  state: PinchDetectorState;
+  state: PinchState;
 }
 
 export function PinchIndicator({ state }: PinchIndicatorProps) {
