@@ -9,13 +9,13 @@ import {
   PoseLandmarker,
   type PoseLandmarkerResult,
 } from "@mediapipe/tasks-vision";
-import type { Detector } from "./types";
+import type { Detector } from "./types.ts";
 import {
   drawConnections,
   drawLandmarks,
   loadVisionFileset,
   POSE_CONNECTIONS,
-} from "./utils";
+} from "./utils.ts";
 
 const MODEL_URL =
   "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task";

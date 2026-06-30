@@ -5,38 +5,47 @@
  *
  */
 
-import type { HandLandmarkerResult, Landmark } from "@mediapipe/tasks-vision";
 import type {
   GestureDetector,
   GestureEvent,
   GestureUpdate,
-  PinchHandState,
-} from "./types";
+} from "../types";
+
+interface Landmark {
+  x: number;
+  y: number;
+  z?: number;
+}
 
 /**
- * Tunable parameters. Defaults chosen during initial testing on a
- * 1280x720 stream; documented in observations.md and ADR-0006.
+ * Per-hand state exposed for UI feedback (the parent's
+ * PinchIndicator component reads this to draw the progress ring).
  */
-export interface PinchDetectorOptions {
-  /**
-   * Relative distance below which the pinch is considered "engaged".
-   */
+export interface PinchHandState {
+  handIndex: number;
+  phase: "idle" | "candidate" | "active";
+  progress: number;
+  position: { x: number; y: number };
+}
+
+export interface PinchState {
+  hands: PinchHandState[];
+}
+
+export interface PinchOptions {
+  /** Relative distance below which pinch is considered engaged. */
   activateThreshold?: number;
-  /**
-   * Relative distance above which an active pinch is released.
-   */
+  /** Relative distance above which an active pinch is released. */
   deactivateThreshold?: number;
-  /**
-   * How long the activation condition must hold continuously before
-   * firing pinch-start, in milliseconds. Filters out accidental
-   * touches.
-   */
+  /** Dwell time before pinch-start fires, in milliseconds. */
   dwellTimeMs?: number;
-  /**
-   * EMA smoothing factor in [0,1]. Higher = more reactive, lower =
-   * more stable
-   */
+  /** EMA smoothing factor in [0,1]. Higher = more reactive. */
   smoothingAlpha?: number;
+  /**
+   * Optional override for the detector id. Useful when registering
+   * two Pinch detectors with different configurations.
+   */
+  id?: string;
 }
 
 interface PerHandState {
@@ -52,14 +61,27 @@ const INDEX_TIP = 8;
 const WRIST = 0;
 const MIDDLE_MCP = 9;
 
-export class PinchDetector implements GestureDetector {
+/**
+ * Hand-tracking result shape we expect. Kept structural rather
+ * than imported from MediaPipe so the library does not depend on
+ * the MediaPipe types directly.
+ */
+interface HandResult {
+  landmarks?: ReadonlyArray<ReadonlyArray<Landmark>>;
+}
+
+export class PinchGesture implements GestureDetector<unknown> {
+  readonly id: string;
+  readonly inputKind = "hands" as const;
+
   private readonly activateThreshold: number;
   private readonly deactivateThreshold: number;
   private readonly dwellTimeMs: number;
   private readonly smoothingAlpha: number;
   private readonly handStates = new Map<number, PerHandState>();
 
-  constructor(options: PinchDetectorOptions = {}) {
+  constructor(options: PinchOptions = {}) {
+    this.id = options.id ?? "pinch";
     this.activateThreshold = options.activateThreshold ?? 0.3;
     this.deactivateThreshold = options.deactivateThreshold ?? 0.45;
     this.dwellTimeMs = options.dwellTimeMs ?? 200;
@@ -68,15 +90,16 @@ export class PinchDetector implements GestureDetector {
     if (this.deactivateThreshold <= this.activateThreshold) {
       // Avoid flicker
       throw new Error(
-        "deactivateThreshold must be > activateThreshold for hysteresis",
+        "Pinch Gesture: deactivateThreshold must be > activateThreshold for hysteresis",
       );
     }
   }
 
   update(
-    result: HandLandmarkerResult | null,
+    input: unknown,
     timestamp: number,
   ): GestureUpdate {
+    const result = input as HandResult | null;
     const events: GestureEvent[] = [];
     const handStates: PinchHandState[] = [];
 

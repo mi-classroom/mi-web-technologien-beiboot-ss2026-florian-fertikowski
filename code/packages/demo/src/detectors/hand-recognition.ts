@@ -8,13 +8,13 @@ import {
   HandLandmarker,
   type HandLandmarkerResult,
 } from "@mediapipe/tasks-vision";
-import type { Detector } from "./types";
+import type { Detector } from "./types.ts";
 import {
   HAND_CONNECTIONS,
   drawConnections,
   drawLandmarks,
   loadVisionFileset,
-} from "./utils";
+} from "./utils.ts";
 
 const MODEL_URL =
   "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";

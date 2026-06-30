@@ -11,14 +11,14 @@ import {
   GestureRecognizer,
   type GestureRecognizerResult,
 } from "@mediapipe/tasks-vision";
-import type { Detector } from "./types";
+import type { Detector } from "./types.ts";
 import {
   HAND_CONNECTIONS,
   drawConnections,
   drawLabel,
   drawLandmarks,
   loadVisionFileset,
-} from "./utils";
+} from "./utils.ts";
 
 const MODEL_URL =
   "https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task";

@@ -6,13 +6,27 @@
  *
  */
 
-import type { HandLandmarkerResult, Landmark } from "@mediapipe/tasks-vision";
-import type { GestureDetector, GestureEvent, GestureUpdate } from "./types";
+import type {
+  GestureDetector,
+  GestureEvent,
+  GestureUpdate,
+} from "../types";
+
+interface Landmark {
+  x: number;
+  y: number;
+  z?: number;
+}
+
+interface HandResult {
+  landmarks?: ReadonlyArray<ReadonlyArray<Landmark>>;
+}
+
 
 const WRIST = 0;
 const MIDDLE_MCP = 9;
 
-export interface SwipeDetectorOptions {
+export interface SwipeOptions {
   /**
    * Length of the sliding window in milliseconds
    */
@@ -31,6 +45,8 @@ export interface SwipeDetectorOptions {
    */
   minStraightness?: number;
   cooldownMs?: number;
+  /** Optional override for the detector id. */
+  id?: string;
 }
 
 interface BufferEntry {
@@ -45,7 +61,10 @@ interface PerHandState {
   cooldownUntilMs: number;
 }
 
-export class SwipeDetector implements GestureDetector {
+export class SwipeGesture implements GestureDetector<unknown> {
+  readonly id: string;
+  readonly inputKind = "hands" as const;
+
   private readonly bufferSizeMs: number;
   private readonly minDistanceHandLengths: number;
   private readonly minSpeedHandLengthsPerSec: number;
@@ -53,7 +72,8 @@ export class SwipeDetector implements GestureDetector {
   private readonly cooldownMs: number;
   private readonly handStates = new Map<number, PerHandState>();
 
-  constructor(options: SwipeDetectorOptions = {}) {
+  constructor(options: SwipeOptions = {}) {
+    this.id = options.id ?? "swipe";
     this.bufferSizeMs = options.bufferSizeMs ?? 300;
     this.minDistanceHandLengths = options.minDistanceHandLengths ?? 0.6;
     this.minSpeedHandLengthsPerSec = options.minSpeedHandLengthsPerSec ?? 3.0;
@@ -61,10 +81,8 @@ export class SwipeDetector implements GestureDetector {
     this.cooldownMs = options.cooldownMs ?? 400;
   }
 
-  update(
-    result: HandLandmarkerResult | null,
-    timestamp: number,
-  ): GestureUpdate {
+  update(input: unknown, timestamp: number): GestureUpdate {
+    const result = input as HandResult | null;
     const events: GestureEvent[] = [];
     const hands = result?.landmarks ?? [];
 
