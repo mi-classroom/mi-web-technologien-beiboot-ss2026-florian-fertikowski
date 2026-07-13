@@ -6,79 +6,84 @@
  * this component just fires the callbacks.
  */
 
-import type { Exercise } from "../data/exercises.ts";
+import type {Exercise} from "../data/exercises.ts";
 
 interface DetailScreenProps {
-  exercise: Exercise;
-  positionLabel: string; // e.g. "3 of 10"
-  onBack: () => void;
-  onPrevious: () => void;
-  onNext: () => void;
-  onStart: () => void;
+    exercise: Exercise;
+    positionLabel: string; // e.g. "3 of 10"
+    onBack: () => void;
+    onPrevious: () => void;
+    onNext: () => void;
+    onStart: () => void;
 }
 
 export function DetailScreen({
-  exercise,
-  positionLabel,
-  onBack,
-  onPrevious,
-  onNext,
-  onStart,
-}: DetailScreenProps) {
-  return (
-    <div className="flex h-full flex-col p-8">
-      <header className="flex items-center justify-between pb-6">
-        <button
-          type="button"
-          onClick={onBack}
-          className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
-        >
-          &larr; Back to overview
-        </button>
-        <span className="text-xs text-[var(--color-text-muted)]">
+                                 exercise,
+                                 positionLabel,
+                                 onBack,
+                                 onPrevious,
+                                 onNext,
+                                 onStart,
+                             }: DetailScreenProps) {
+    return (
+        <div className="flex h-full flex-col p-8">
+            <header className="flex items-center justify-between pb-6">
+                <button
+                    type="button"
+                    onClick={onBack}
+                    className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+                >
+                    &larr; Back to overview
+                </button>
+                <span className="text-xs text-[var(--color-text-muted)]">
           {positionLabel}
         </span>
-      </header>
+            </header>
 
-      <main className="flex flex-1 items-center justify-center">
-        <div className="max-w-xl text-center">
-          <div className="mb-6 text-8xl">{exercise.icon}</div>
-          <h1 className="mb-4 text-4xl font-semibold">{exercise.name}</h1>
-          <p className="mb-8 text-lg text-[var(--color-text-muted)]">
-            {exercise.description}
-          </p>
-          <div className="text-sm text-[var(--color-text-muted)]">
-            Suggested duration:{" "}
-            <span className="text-[var(--color-text)]">
+            <main className="flex flex-1 flex-col items-center ">
+                <div className={"flex flex-1 items-center justify-center"}>
+                    <div className="max-w-xl text-center">
+                        <h1 className="mb-4 text-4xl font-semibold">{exercise.name}</h1>
+                        <p className="mb-8 text-lg text-[var(--color-text-muted)]">
+                            {exercise.description}
+                        </p>
+                        <div className="text-sm text-[var(--color-text-muted)]">
+                            Suggested duration:{" "}
+                            <span className="text-[var(--color-text)]">
               {exercise.durationSeconds} seconds
             </span>
-          </div>
-        </div>
-      </main>
+                        </div>
+                    </div>
+                </div>
 
-      <footer className="flex items-center justify-between pt-6">
-        <button
-          type="button"
-          onClick={onPrevious}
-          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm hover:bg-[var(--color-surface-hover)]"
-        >
-          &larr; Previous
-        </button>
-        <button
-          type="button"
-          onClick={onStart}
-          className="rounded-lg bg-[var(--color-accent)] px-8 py-3 font-medium text-[var(--color-bg)] transition hover:bg-[var(--color-accent-strong)]"
-        >
-          Start exercise
-        </button>
-        <button
-          type="button"
-          onClick={onNext}
-          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm hover:bg-[var(--color-surface-hover)]"
-        >
-          Next &rarr;
-        </button>
-      </footer>
-    </div>
-  );
+                <div className={"flex gap-10"}>
+                    <button
+                        type="button"
+                        onClick={onPrevious}
+                        className="border px-4 py-2 text-sm hover:bg-black hover:text-white cursor-pointer"
+                    >
+                        &larr; Previous
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onStart}
+                        className="px-8 py-3 font-medium transition bg-black text-white cursor-pointer "
+                    >
+                        Start exercise
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onNext}
+                        className="border px-4 py-2 text-sm hover:bg-black hover:text-white cursor-pointer"
+                    >
+                        Next &rarr;
+                    </button>
+                </div>
+            </main>
+
+            <footer className="flex items-center justify-between pt-6">
+
+            </footer>
+        </div>
+    );
 }

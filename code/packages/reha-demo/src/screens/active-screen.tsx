@@ -44,7 +44,6 @@ export function ActiveScreen({
 
       <main className="flex flex-1 flex-col items-center justify-center gap-8">
         <div className="text-center">
-          <div className="mb-2 text-5xl">{exercise.icon}</div>
           <h1 className="text-2xl font-medium">{exercise.name}</h1>
         </div>
 

@@ -1,7 +1,7 @@
 import pointIcon from "../assets/icons/point-gesture.svg";
 import pinchIcon from "../assets/icons/pinch-gesture.svg";
-import palmIcon from "../assets/icons/pinch-gesture.svg"
-import swipeIcon from "../assets/icons/pinch-gesture.svg"
+import palmIcon from "../assets/icons/palm-gesture.svg"
+import swipeIcon from "../assets/icons/swipe-gesture.svg"
 import type { Hint } from "../utils/types.ts";
 
 interface GestureHintBarProps {
@@ -22,7 +22,7 @@ export function GestureHintBar({ hints }: GestureHintBarProps) {
         case "swipe":
           return swipeIcon
           default:
-              return null
+              return undefined
       }
   }
 
@@ -31,7 +31,7 @@ export function GestureHintBar({ hints }: GestureHintBarProps) {
       {hints.map((hint, i) => (
         <div key={i} className={"flex gap-4"}>
             <img src={getIcon(hint.iconName)} height={10} width={50} alt="pointIcon"/>
-            <div className={"my-auto pb-1"}>
+            <div className={"my-auto pb-2 uppercase font-sans font-medium"}>
                 {hint.text}
             </div>
         </div>

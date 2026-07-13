@@ -2,10 +2,6 @@
  * Static list of shoulder/neck rehab exercises used in the demo.
  * Sourced from a public physiotherapy video: "Schultern und Nacken
  * dehnen - 10 ultimative Übungen für eine entspannte Muskulatur!"
- *
- * The set is chosen to be diverse enough to demonstrate all four
- * gestures in context (navigation, activation, pause, pointing),
- * not to be a complete clinical program.
  */
 
 export interface Exercise {
