@@ -10,21 +10,21 @@
  */
 
 interface PointingCursorProps {
-    position: { x: number; y: number } | null;
+  position: { x: number; y: number } | null;
 }
 
 export function PointingCursor({ position }: PointingCursorProps) {
-    return (
-        <div className="pointer-events-none absolute inset-0 -scale-x-100">
-            {position && (
-                <div
-                    className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-300 ring-2 ring-yellow-100 shadow-lg"
-                    style={{
-                        left: `${position.x * 100}%`,
-                        top: `${position.y * 100}%`,
-                    }}
-                />
-            )}
-        </div>
-    );
+  return (
+    <div className="pointer-events-none absolute inset-0 -scale-x-100">
+      {position && (
+        <div
+          className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-300 ring-2 ring-yellow-100 shadow-lg"
+          style={{
+            left: `${position.x * 100}%`,
+            top: `${position.y * 100}%`,
+          }}
+        />
+      )}
+    </div>
+  );
 }

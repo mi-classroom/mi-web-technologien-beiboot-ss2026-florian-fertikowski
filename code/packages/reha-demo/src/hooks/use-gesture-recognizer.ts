@@ -86,8 +86,10 @@ export function useGestureRecognizer<C extends string>(
   // Pointing position lives in React state, updated when it
   // changes meaningfully. See ADR-0010 for why we throttle by
   // delta rather than emit fewer library events.
-  const [pointingPosition, setPointingPosition] =
-    useState<{ x: number; y: number } | null>(null);
+  const [pointingPosition, setPointingPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const lastPointingRef = useRef<{ x: number; y: number } | null>(null);
 
   // Lifecycle effect: create recognizer, register gestures, wire

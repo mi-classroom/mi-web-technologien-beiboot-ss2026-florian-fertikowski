@@ -1,4 +1,4 @@
 export type Hint = {
-    text: string;
-    iconName: string;
-}
+  text: string;
+  iconName: string;
+};

@@ -9,5 +9,8 @@
   "scripts": {
     "dev": "npm run dev --workspace=reha-demo",
     "build": "npm run build --workspace=gesture-lib && npm run build --workspace=demo && npm run build --workspace=reha-demo"
+  },
+  "devDependencies": {
+    "prettier": "3.9.5"
   }
 }

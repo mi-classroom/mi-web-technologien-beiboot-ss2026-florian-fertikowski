@@ -74,7 +74,7 @@ via `register()`.
 
 ### Detectors
 
-A *detector* is a class that implements the `GestureDetector`
+A _detector_ is a class that implements the `GestureDetector`
 interface. Each detector is responsible for one gesture: it
 receives frames via its `update()` method and returns events
 plus optional per-frame state.
@@ -144,7 +144,7 @@ in the order it subscribed.
 
 #### `recognizer.onAny(handler): () => void`
 
-Subscribes to *all* events from any detector. Useful for logging
+Subscribes to _all_ events from any detector. Useful for logging
 or dispatching to a single switch statement.
 
 ```ts
@@ -242,17 +242,17 @@ interface GestureUpdate {
 
 All built-in event types:
 
-| Type            | Payload                                    |
-|-----------------|--------------------------------------------|
-| `pinch-start`   | `handIndex, timestamp`                     |
-| `pinch-end`     | `handIndex, timestamp, durationMs`         |
-| `swipe-left`    | `handIndex, timestamp`                     |
-| `swipe-right`   | `handIndex, timestamp`                     |
-| `pause-start`   | `handIndex, timestamp`                     |
-| `pause-end`     | `handIndex, timestamp, durationMs`         |
-| `pointing-start`| `handIndex, timestamp, x, y`               |
-| `pointing-move` | `handIndex, timestamp, x, y`               |
-| `pointing-end`  | `handIndex, timestamp, x, y, durationMs`   |
+| Type             | Payload                                  |
+| ---------------- | ---------------------------------------- |
+| `pinch-start`    | `handIndex, timestamp`                   |
+| `pinch-end`      | `handIndex, timestamp, durationMs`       |
+| `swipe-left`     | `handIndex, timestamp`                   |
+| `swipe-right`    | `handIndex, timestamp`                   |
+| `pause-start`    | `handIndex, timestamp`                   |
+| `pause-end`      | `handIndex, timestamp, durationMs`       |
+| `pointing-start` | `handIndex, timestamp, x, y`             |
+| `pointing-move`  | `handIndex, timestamp, x, y`             |
+| `pointing-end`   | `handIndex, timestamp, x, y, durationMs` |
 
 Positions (`x`, `y`) are in normalized `[0, 1]` coordinates
 aligned with the camera frame.
@@ -329,9 +329,9 @@ new PauseGesture({
 });
 ```
 
-The thumb abduction check uses both distance *and* direction
+The thumb abduction check uses both distance _and_ direction
 relative to the hand's long axis, which avoids false positives
-when the thumb folds *over* the palm. See ADR-0009.
+when the thumb folds _over_ the palm. See ADR-0009.
 
 ### `PointingGesture`
 

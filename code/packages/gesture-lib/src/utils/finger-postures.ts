@@ -13,9 +13,9 @@
  */
 
 export interface Landmark {
-    x: number;
-    y: number;
-    z?: number;
+  x: number;
+  y: number;
+  z?: number;
 }
 
 // MediaPipe hand-landmark indices.
@@ -43,16 +43,16 @@ const PINKY_TIP = 20;
 export type FingerName = "index" | "middle" | "ring" | "pinky";
 
 interface FingerLandmarkIndices {
-    mcp: number;
-    pip: number;
-    tip: number;
+  mcp: number;
+  pip: number;
+  tip: number;
 }
 
 const FINGER_INDICES: Record<FingerName, FingerLandmarkIndices> = {
-    index: { mcp: INDEX_MCP, pip: INDEX_PIP, tip: INDEX_TIP },
-    middle: { mcp: MIDDLE_MCP, pip: MIDDLE_PIP, tip: MIDDLE_TIP },
-    ring: { mcp: RING_MCP, pip: RING_PIP, tip: RING_TIP },
-    pinky: { mcp: PINKY_MCP, pip: PINKY_PIP, tip: PINKY_TIP },
+  index: { mcp: INDEX_MCP, pip: INDEX_PIP, tip: INDEX_TIP },
+  middle: { mcp: MIDDLE_MCP, pip: MIDDLE_PIP, tip: MIDDLE_TIP },
+  ring: { mcp: RING_MCP, pip: RING_PIP, tip: RING_TIP },
+  pinky: { mcp: PINKY_MCP, pip: PINKY_PIP, tip: PINKY_TIP },
 };
 
 /**
@@ -61,11 +61,11 @@ const FINGER_INDICES: Record<FingerName, FingerLandmarkIndices> = {
  * are missing or the distance is degenerate.
  */
 export function handLength(hand: ReadonlyArray<Landmark>): number | null {
-    const wrist = hand[WRIST];
-    const mcp = hand[MIDDLE_MCP];
-    if (!wrist || !mcp) return null;
-    const d = distance2D(wrist, mcp);
-    return d < 1e-6 ? null : d;
+  const wrist = hand[WRIST];
+  const mcp = hand[MIDDLE_MCP];
+  if (!wrist || !mcp) return null;
+  const d = distance2D(wrist, mcp);
+  return d < 1e-6 ? null : d;
 }
 
 /**
@@ -81,19 +81,19 @@ export function handLength(hand: ReadonlyArray<Landmark>): number | null {
  * For "definitely curled" the inverse threshold is closer to 0.4.
  */
 export function isFingerExtended(
-    hand: ReadonlyArray<Landmark>,
-    finger: FingerName,
-    threshold = 0.7,
+  hand: ReadonlyArray<Landmark>,
+  finger: FingerName,
+  threshold = 0.7,
 ): boolean {
-    const indices = FINGER_INDICES[finger];
-    const tip = hand[indices.tip];
-    const mcp = hand[indices.mcp];
-    if (!tip || !mcp) return false;
+  const indices = FINGER_INDICES[finger];
+  const tip = hand[indices.tip];
+  const mcp = hand[indices.mcp];
+  if (!tip || !mcp) return false;
 
-    const hl = handLength(hand);
-    if (hl === null) return false;
+  const hl = handLength(hand);
+  if (hl === null) return false;
 
-    return distance2D(tip, mcp) / hl > threshold;
+  return distance2D(tip, mcp) / hl > threshold;
 }
 
 /**
@@ -108,19 +108,19 @@ export function isFingerExtended(
  * hysteresis.
  */
 export function isFingerCurled(
-    hand: ReadonlyArray<Landmark>,
-    finger: FingerName,
-    threshold = 0.5,
+  hand: ReadonlyArray<Landmark>,
+  finger: FingerName,
+  threshold = 0.5,
 ): boolean {
-    const indices = FINGER_INDICES[finger];
-    const tip = hand[indices.tip];
-    const mcp = hand[indices.mcp];
-    if (!tip || !mcp) return false;
+  const indices = FINGER_INDICES[finger];
+  const tip = hand[indices.tip];
+  const mcp = hand[indices.mcp];
+  if (!tip || !mcp) return false;
 
-    const hl = handLength(hand);
-    if (hl === null) return false;
+  const hl = handLength(hand);
+  if (hl === null) return false;
 
-    return distance2D(tip, mcp) / hl < threshold;
+  return distance2D(tip, mcp) / hl < threshold;
 }
 
 /**
@@ -140,40 +140,40 @@ export function isFingerCurled(
  * between 30° and 120° for a side-abducted thumb.
  */
 export function isThumbAbducted(
-    hand: ReadonlyArray<Landmark>,
-    distanceThreshold = 0.35,
-    minAngleDeg = 30,
-    maxAngleDeg = 120,
+  hand: ReadonlyArray<Landmark>,
+  distanceThreshold = 0.35,
+  minAngleDeg = 30,
+  maxAngleDeg = 120,
 ): boolean {
-    const tip = hand[THUMB_TIP];
-    const wrist = hand[WRIST];
-    const indexMcp = hand[INDEX_MCP];
-    const middleMcp = hand[MIDDLE_MCP];
+  const tip = hand[THUMB_TIP];
+  const wrist = hand[WRIST];
+  const indexMcp = hand[INDEX_MCP];
+  const middleMcp = hand[MIDDLE_MCP];
 
-    if (!tip || !wrist || !indexMcp || !middleMcp) return false;
+  if (!tip || !wrist || !indexMcp || !middleMcp) return false;
 
-    const hl = handLength(hand);
-    if (hl === null) return false;
+  const hl = handLength(hand);
+  if (hl === null) return false;
 
-    // Distance check — thumb tip must be far enough from index MCP.
-    if (distance2D(tip, indexMcp) / hl < distanceThreshold) return false;
+  // Distance check — thumb tip must be far enough from index MCP.
+  if (distance2D(tip, indexMcp) / hl < distanceThreshold) return false;
 
-    // Direction check — thumb direction vs. hand long axis.
-    const handAxis = { x: middleMcp.x - wrist.x, y: middleMcp.y - wrist.y };
-    const thumbDir = { x: tip.x - wrist.x, y: tip.y - wrist.y };
+  // Direction check — thumb direction vs. hand long axis.
+  const handAxis = { x: middleMcp.x - wrist.x, y: middleMcp.y - wrist.y };
+  const thumbDir = { x: tip.x - wrist.x, y: tip.y - wrist.y };
 
-    const dot = handAxis.x * thumbDir.x + handAxis.y * thumbDir.y;
-    const handMag = Math.sqrt(handAxis.x ** 2 + handAxis.y ** 2);
-    const thumbMag = Math.sqrt(thumbDir.x ** 2 + thumbDir.y ** 2);
+  const dot = handAxis.x * thumbDir.x + handAxis.y * thumbDir.y;
+  const handMag = Math.sqrt(handAxis.x ** 2 + handAxis.y ** 2);
+  const thumbMag = Math.sqrt(thumbDir.x ** 2 + thumbDir.y ** 2);
 
-    if (handMag < 1e-6 || thumbMag < 1e-6) return false;
+  if (handMag < 1e-6 || thumbMag < 1e-6) return false;
 
-    const cosAngle = dot / (handMag * thumbMag);
-    // Clamp to [-1, 1] to avoid NaN from floating-point drift.
-    const clamped = Math.max(-1, Math.min(1, cosAngle));
-    const angleDeg = (Math.acos(clamped) * 180) / Math.PI;
+  const cosAngle = dot / (handMag * thumbMag);
+  // Clamp to [-1, 1] to avoid NaN from floating-point drift.
+  const clamped = Math.max(-1, Math.min(1, cosAngle));
+  const angleDeg = (Math.acos(clamped) * 180) / Math.PI;
 
-    return angleDeg >= minAngleDeg && angleDeg <= maxAngleDeg;
+  return angleDeg >= minAngleDeg && angleDeg <= maxAngleDeg;
 }
 
 /**
@@ -183,7 +183,7 @@ export function isThumbAbducted(
  * is already projection-based.
  */
 export function distance2D(a: Landmark, b: Landmark): number {
-    const dx = a.x - b.x;
-    const dy = a.y - b.y;
-    return Math.sqrt(dx * dx + dy * dy);
+  const dx = a.x - b.x;
+  const dy = a.y - b.y;
+  return Math.sqrt(dx * dx + dy * dy);
 }

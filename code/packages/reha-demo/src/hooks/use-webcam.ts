@@ -16,9 +16,7 @@ interface WebcamState {
   error: string | null;
 }
 
-export function useWebcam(
-  constraints: MediaStreamConstraints,
-): WebcamState {
+export function useWebcam(constraints: MediaStreamConstraints): WebcamState {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);

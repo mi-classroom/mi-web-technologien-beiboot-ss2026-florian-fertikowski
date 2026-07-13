@@ -8,7 +8,7 @@
  */
 
 import type { Exercise } from "../data/exercises.ts";
-import {ExerciseCard} from "../components/exercise-card.tsx";
+import { ExerciseCard } from "../components/exercise-card.tsx";
 
 interface OverviewScreenProps {
   exercises: Exercise[];
@@ -28,15 +28,15 @@ export function OverviewScreen({
       </header>
       <div className="p-10 grid flex-1 grid-cols-2 gap-4 overflow-y-auto md:grid-cols-3 lg:grid-cols-4">
         {exercises.map((exercise, index) => {
-            const highlighted = highlightedId === exercise.id;
-            return (
-                <ExerciseCard
-                    exercise={exercise}
-                    highlighted={highlighted}
-                    index={index}
-                    onSelect={onSelect}
-                />
-            );
+          const highlighted = highlightedId === exercise.id;
+          return (
+            <ExerciseCard
+              exercise={exercise}
+              highlighted={highlighted}
+              index={index}
+              onSelect={onSelect}
+            />
+          );
         })}
       </div>
     </div>

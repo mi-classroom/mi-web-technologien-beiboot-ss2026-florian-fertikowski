@@ -18,10 +18,7 @@ export function CursorOverlay({ position }: CursorOverlayProps) {
   if (!position) return null;
 
   return (
-    <div
-      className="pointer-events-none fixed inset-0 z-40"
-      aria-hidden="true"
-    >
+    <div className="pointer-events-none fixed inset-0 z-40" aria-hidden="true">
       <div
         className="absolute h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black opacity-80 shadow-lg ring-2 ring-white/40"
         style={{

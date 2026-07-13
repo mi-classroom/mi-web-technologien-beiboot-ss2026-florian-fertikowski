@@ -73,9 +73,7 @@ function App() {
   }, []);
 
   const handlePrevious = useCallback(() => {
-    setSelectedIndex(
-      (i) => (i - 1 + exercises.length) % exercises.length,
-    );
+    setSelectedIndex((i) => (i - 1 + exercises.length) % exercises.length);
   }, []);
 
   const handleNext = useCallback(() => {
@@ -229,35 +227,35 @@ function App() {
         return [
           {
             text: "point to select",
-            iconName: "point"
+            iconName: "point",
           },
           {
             text: "pinch to open",
-            iconName: "pinch"
-          }
+            iconName: "pinch",
+          },
         ];
       case "detail":
         return [
           {
             text: "swipe to browse",
-            iconName: "swipe"
+            iconName: "swipe",
           },
           {
             text: "pinch to start",
-            iconName: "pinch"
-          }
-        ]
+            iconName: "pinch",
+          },
+        ];
       case "active":
         return [
           {
             text: "open palm to pause",
-            iconName: "palm"
+            iconName: "palm",
           },
           {
             text: "swipe to end",
-            iconName: "swipe"
-          }
-        ]
+            iconName: "swipe",
+          },
+        ];
     }
   }, [screen]);
 

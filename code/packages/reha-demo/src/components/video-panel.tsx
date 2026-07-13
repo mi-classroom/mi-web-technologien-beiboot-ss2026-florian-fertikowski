@@ -15,11 +15,7 @@ interface VideoPanelProps {
   statusText?: string;
 }
 
-export function VideoPanel({
-  videoRef,
-  message,
-  statusText,
-}: VideoPanelProps) {
+export function VideoPanel({ videoRef, message, statusText }: VideoPanelProps) {
   return (
     <div className="pointer-events-none fixed bottom-4 right-4 z-30 w-60 overflow-hidden bg-black shadow-xl">
       <div className="relative aspect-video">
