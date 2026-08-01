@@ -6,11 +6,7 @@
  *
  */
 
-import type {
-  GestureDetector,
-  GestureEvent,
-  GestureUpdate,
-} from "../types";
+import type { GestureDetector, GestureEvent, GestureUpdate } from "../types";
 
 interface Landmark {
   x: number;
@@ -21,7 +17,6 @@ interface Landmark {
 interface HandResult {
   landmarks?: ReadonlyArray<ReadonlyArray<Landmark>>;
 }
-
 
 const WRIST = 0;
 const MIDDLE_MCP = 9;

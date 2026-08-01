@@ -65,8 +65,13 @@ function App() {
   // dependency array keeps the array identity stable across renders,
   // so the recognizer hook doesn't see "new gestures" every time.
   const gestures = useMemo(
-      () => [new PinchGesture(), new SwipeGesture(), new PauseGesture(), new PointingGesture(),],
-      [],
+    () => [
+      new PinchGesture(),
+      new SwipeGesture(),
+      new PauseGesture(),
+      new PointingGesture(),
+    ],
+    [],
   );
 
   const { processFrame, pinchState, pointingPosition } = useGestureRecognizer({
@@ -105,15 +110,15 @@ function App() {
   });
 
   const handleResult = useCallback(
-      (result: unknown, timestamp: number) => {
-        // Hand-based gestures only run in the hands mode. Gesture
-        // mode also has hand landmarks, but in the spike we keep the
-        // modes cleanly separated so it's obvious what triggers what.
-        if (mode === "hands") {
-          processFrame(result as HandLandmarkerResult | null, timestamp);
-        }
-      },
-      [mode, processFrame],
+    (result: unknown, timestamp: number) => {
+      // Hand-based gestures only run in the hands mode. Gesture
+      // mode also has hand landmarks, but in the spike we keep the
+      // modes cleanly separated so it's obvious what triggers what.
+      if (mode === "hands") {
+        processFrame(result as HandLandmarkerResult | null, timestamp);
+      }
+    },
+    [mode, processFrame],
   );
 
   useDetectionLoop({

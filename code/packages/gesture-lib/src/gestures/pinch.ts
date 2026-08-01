@@ -5,11 +5,7 @@
  *
  */
 
-import type {
-  GestureDetector,
-  GestureEvent,
-  GestureUpdate,
-} from "../types";
+import type { GestureDetector, GestureEvent, GestureUpdate } from "../types";
 
 interface Landmark {
   x: number;
@@ -95,10 +91,7 @@ export class PinchGesture implements GestureDetector<unknown> {
     }
   }
 
-  update(
-    input: unknown,
-    timestamp: number,
-  ): GestureUpdate {
+  update(input: unknown, timestamp: number): GestureUpdate {
     const result = input as HandResult | null;
     const events: GestureEvent[] = [];
     const handStates: PinchHandState[] = [];

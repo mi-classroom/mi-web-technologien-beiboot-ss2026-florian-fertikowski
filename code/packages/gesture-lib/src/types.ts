@@ -35,15 +35,15 @@ export type GestureEvent = BuiltInGestureEvent | CustomGestureEvent;
  * Events fired by the gestures shipped with this library.
  */
 export type BuiltInGestureEvent =
-    | PinchStartEvent
-    | PinchEndEvent
-    | SwipeLeftEvent
-    | SwipeRightEvent
-    | PauseStartEvent
-    | PauseEndEvent
-    | PointingStartEvent
-    | PointingMoveEvent
-    | PointingEndEvent;
+  | PinchStartEvent
+  | PinchEndEvent
+  | SwipeLeftEvent
+  | SwipeRightEvent
+  | PauseStartEvent
+  | PauseEndEvent
+  | PointingStartEvent
+  | PointingMoveEvent
+  | PointingEndEvent;
 
 /**
  * Custom gestures extend this map via declaration merging. The
@@ -52,7 +52,7 @@ export type BuiltInGestureEvent =
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CustomGestureEventMap {
-    // Filled in by consumers via module augmentation.
+  // Filled in by consumers via module augmentation.
 }
 
 /**
@@ -61,41 +61,41 @@ export interface CustomGestureEventMap {
  * GestureEvent.
  */
 export type CustomGestureEvent =
-    CustomGestureEventMap[keyof CustomGestureEventMap];
+  CustomGestureEventMap[keyof CustomGestureEventMap];
 
 interface BaseGestureEvent {
-    /** Monotonically increasing timestamp, copied from update(). */
-    timestamp: number;
-    /** Index of the hand that triggered the event, when applicable. */
-    handIndex?: number;
+  /** Monotonically increasing timestamp, copied from update(). */
+  timestamp: number;
+  /** Index of the hand that triggered the event, when applicable. */
+  handIndex?: number;
 }
 
 export interface PinchStartEvent extends BaseGestureEvent {
-    type: "pinch-start";
+  type: "pinch-start";
 }
 
 export interface PinchEndEvent extends BaseGestureEvent {
-    type: "pinch-end";
-    /** How long the pinch was held, in milliseconds. */
-    durationMs: number;
+  type: "pinch-end";
+  /** How long the pinch was held, in milliseconds. */
+  durationMs: number;
 }
 
 export interface SwipeLeftEvent extends BaseGestureEvent {
-    type: "swipe-left";
+  type: "swipe-left";
 }
 
 export interface SwipeRightEvent extends BaseGestureEvent {
-    type: "swipe-right";
+  type: "swipe-right";
 }
 
 export interface PauseStartEvent extends BaseGestureEvent {
-    type: "pause-start";
+  type: "pause-start";
 }
 
 export interface PauseEndEvent extends BaseGestureEvent {
-    type: "pause-end";
-    /** How long the open-palm hold was active, in milliseconds. */
-    durationMs: number;
+  type: "pause-end";
+  /** How long the open-palm hold was active, in milliseconds. */
+  durationMs: number;
 }
 
 /**
@@ -104,10 +104,10 @@ export interface PauseEndEvent extends BaseGestureEvent {
  * location at the moment of activation.
  */
 export interface PointingStartEvent extends BaseGestureEvent {
-    type: "pointing-start";
-    /** Cursor position in normalized [0,1] coordinates. */
-    x: number;
-    y: number;
+  type: "pointing-start";
+  /** Cursor position in normalized [0,1] coordinates. */
+  x: number;
+  y: number;
 }
 
 /**
@@ -116,9 +116,9 @@ export interface PointingStartEvent extends BaseGestureEvent {
  * High-frequency by design — the consumer throttles if needed.
  */
 export interface PointingMoveEvent extends BaseGestureEvent {
-    type: "pointing-move";
-    x: number;
-    y: number;
+  type: "pointing-move";
+  x: number;
+  y: number;
 }
 
 /**
@@ -127,11 +127,11 @@ export interface PointingMoveEvent extends BaseGestureEvent {
  * location.
  */
 export interface PointingEndEvent extends BaseGestureEvent {
-    type: "pointing-end";
-    x: number;
-    y: number;
-    /** How long the pointing gesture was active, in milliseconds. */
-    durationMs: number;
+  type: "pointing-end";
+  x: number;
+  y: number;
+  /** How long the pointing gesture was active, in milliseconds. */
+  durationMs: number;
 }
 
 // =====================================================================
@@ -146,8 +146,8 @@ export interface PointingEndEvent extends BaseGestureEvent {
  *   own state shape; consumers cast appropriately.
  */
 export interface GestureUpdate {
-    events: GestureEvent[];
-    state?: unknown;
+  events: GestureEvent[];
+  state?: unknown;
 }
 
 /**
@@ -158,31 +158,31 @@ export interface GestureUpdate {
  * same interface.
  */
 export interface GestureDetector<T = unknown> {
-    /**
-     * Stable identifier for this detector. Used by the recognizer to
-     * key per-frame state in RecognizerFrameState. Must be unique
-     * across registered detectors on a single recognizer.
-     */
-    readonly id: string;
+  /**
+   * Stable identifier for this detector. Used by the recognizer to
+   * key per-frame state in RecognizerFrameState. Must be unique
+   * across registered detectors on a single recognizer.
+   */
+  readonly id: string;
 
-    /**
-     * Optional declaration of what input this detector expects.
-     * Informational for v1; reserved for future multi-input routing.
-     */
-    readonly inputKind?: "hands" | "pose" | "any";
+  /**
+   * Optional declaration of what input this detector expects.
+   * Informational for v1; reserved for future multi-input routing.
+   */
+  readonly inputKind?: "hands" | "pose" | "any";
 
-    /**
-     * Called once per frame with the raw detection result and the
-     * current timestamp. Returns any events that fire this frame
-     * plus optional per-frame state.
-     */
-    update(input: T, timestamp: number): GestureUpdate;
+  /**
+   * Called once per frame with the raw detection result and the
+   * current timestamp. Returns any events that fire this frame
+   * plus optional per-frame state.
+   */
+  update(input: T, timestamp: number): GestureUpdate;
 
-    /**
-     * Clears internal state. Called by the recognizer's reset(), and
-     * may be called directly by consumers (e.g. on camera reconnect).
-     */
-    reset(): void;
+  /**
+   * Clears internal state. Called by the recognizer's reset(), and
+   * may be called directly by consumers (e.g. on camera reconnect).
+   */
+  reset(): void;
 }
 
 // =====================================================================
@@ -197,7 +197,7 @@ export interface GestureDetector<T = unknown> {
  *   const pinchState = state.detectors["pinch"] as PinchState;
  */
 export interface RecognizerFrameState {
-    detectors: Record<string, unknown>;
+  detectors: Record<string, unknown>;
 }
 
 // =====================================================================
@@ -216,6 +216,6 @@ export type GestureEventType = GestureEvent["type"];
  * subscriptions.
  */
 export type EventByType<T extends GestureEventType> = Extract<
-    GestureEvent,
-    { type: T }
+  GestureEvent,
+  { type: T }
 >;
