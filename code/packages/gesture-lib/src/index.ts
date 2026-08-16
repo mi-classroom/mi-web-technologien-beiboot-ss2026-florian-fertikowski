@@ -20,3 +20,6 @@ export type {
   PointingMoveEvent,
   PointingEndEvent,
 } from "./types";
+
+export { HAND_LANDMARKS, FINGER_LANDMARKS } from "./hand-landmarks";
+export type { HandLandmarkIndex, FingerName } from "./hand-landmarks";
