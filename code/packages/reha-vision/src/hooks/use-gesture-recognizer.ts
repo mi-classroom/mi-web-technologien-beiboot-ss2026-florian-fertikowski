@@ -8,6 +8,21 @@
  * handlers declare which app contexts they apply to, and the hook
  * mirrors the app's current context into
  * `recognizer.setActiveContext()`.
+ *
+ * Event subscriptions are derived from whatever keys are present
+ * in the `handlers` object passed in, not from a fixed list of the
+ * library's built-in event types. An earlier version hardcoded
+ * that list (only the nine built-in pinch/swipe/pause/pointing
+ * event names), which meant a custom gesture's events — like
+ * FistGesture's "fist-start"/"fist-end", added via module
+ * augmentation — were never subscribed to at all: TypeScript
+ * happily accepted `handlers["fist-start"]` as a valid key (the
+ * augmented type says it's legitimate), but the hardcoded runtime
+ * list didn't know it existed, so `recognizer.on("fist-start", ...)`
+ * was simply never called. The detector fired the event correctly;
+ * nothing was listening. Deriving the subscription list from the
+ * handlers object itself means any future custom gesture works
+ * through this hook without editing the hook again.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -39,18 +54,6 @@ interface UseGestureRecognizerResult {
   pointingPosition: { x: number; y: number } | null;
 }
 
-const EVENT_TYPES: GestureEventType[] = [
-  "pinch-start",
-  "pinch-end",
-  "swipe-left",
-  "swipe-right",
-  "pause-start",
-  "pause-end",
-  "pointing-start",
-  "pointing-move",
-  "pointing-end",
-];
-
 export function useGestureRecognizer<C extends string>(
   options: UseGestureRecognizerOptions<C>,
 ): UseGestureRecognizerResult {
@@ -67,10 +70,8 @@ export function useGestureRecognizer<C extends string>(
     recognizerRef.current?.setActiveContext(activeContext);
   }, [activeContext]);
 
-  const [pointingPosition, setPointingPosition] = useState<{
-    x: number;
-    y: number;
-  } | null>(null);
+  const [pointingPosition, setPointingPosition] =
+    useState<{ x: number; y: number } | null>(null);
   const lastPointingRef = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
@@ -84,7 +85,12 @@ export function useGestureRecognizer<C extends string>(
 
     const unsubscribes: Array<() => void> = [];
 
-    for (const type of EVENT_TYPES) {
+    // Subscribe to whatever event types the consumer declared
+    const eventTypes = Object.keys(
+      handlers ?? {},
+    ) as GestureEventType[];
+
+    for (const type of eventTypes) {
       const contexts = handlers?.[type]?.contexts;
       const wrapper = ((event: GestureEvent) => {
         const entry = handlersRef.current?.[type];
