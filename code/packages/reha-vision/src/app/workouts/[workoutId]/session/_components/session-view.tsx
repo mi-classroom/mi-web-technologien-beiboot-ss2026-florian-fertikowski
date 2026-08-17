@@ -207,7 +207,11 @@ export function SessionView({ workoutId }: SessionViewProps) {
 
   const gestures = useMemo(
     () => [
-      new PinchGesture(),
+      new PinchGesture({
+        activateThreshold: 0.2,
+        deactivateThreshold: 0.32,
+        dwellTimeMs: 3000,
+      }),
       new SwipeGesture(),
       new PauseGesture({
         activateExtendedThreshold: 0.6,
@@ -294,11 +298,17 @@ export function SessionView({ workoutId }: SessionViewProps) {
     else setScreen("detail");
   }, [screen, advance]);
 
-  const { processFrame } = useGestureRecognizer<SessionContext>({
+  const { processFrame, pinchProgress } = useGestureRecognizer<SessionContext>({
     gestures,
     activeContext,
     handlers: {
-      "pinch-end": {
+      // pinch-start now (not pinch-end): with dwellTimeMs raised
+      // to 3s above, pinch-start already only fires once the full
+      // hold completes — the library's PinchGesture doesn't fire
+      // it early. Using pinch-end here as well would just mean
+      // "wait for release too", an extra, unnecessary step after
+      // the hold is already done.
+      "pinch-start": {
         contexts: ["detail"],
         handler: () => startTimer(),
       },
@@ -381,7 +391,8 @@ export function SessionView({ workoutId }: SessionViewProps) {
   }, [screen, paused, secondsLeft, exitDialogOpen, advance]);
 
   const totalDuration = current?.durationSeconds ?? 1;
-  const progress = screen === "active" ? 1 - secondsLeft / totalDuration : 0;
+  const progress =
+    screen === "active" ? 1 - secondsLeft / totalDuration : pinchProgress;
   const controlState =
     screen === "detail" ? "idle" : paused ? "paused" : "running";
 

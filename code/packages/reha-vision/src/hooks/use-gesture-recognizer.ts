@@ -33,6 +33,7 @@ import {
   type GestureEventType,
   type EventByType,
 } from "gesture-lib";
+import type { PinchState } from "gesture-lib/gestures";
 
 interface ScopedHandler<C extends string, T extends GestureEventType> {
   contexts: C[];
@@ -52,6 +53,7 @@ interface UseGestureRecognizerOptions<C extends string> {
 interface UseGestureRecognizerResult {
   processFrame: (input: unknown, timestamp: number) => void;
   pointingPosition: { x: number; y: number } | null;
+  pinchProgress: number;
 }
 
 export function useGestureRecognizer<C extends string>(
@@ -129,13 +131,28 @@ export function useGestureRecognizer<C extends string>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [pinchProgress, setPinchProgress] = useState(0);
+  const lastPinchProgressRef = useRef(0);
+
   const processFrame = useCallback((input: unknown, timestamp: number) => {
-    recognizerRef.current?.update(input, timestamp);
+    const recognizer = recognizerRef.current;
+    if (!recognizer) return;
+    const frameState = recognizer.update(input, timestamp);
+
+    const pinchState = frameState.detectors["pinch"] as
+      | PinchState
+      | undefined;
+    const progress = pinchState?.hands[0]?.progress ?? 0;
+
+    if (Math.abs(progress - lastPinchProgressRef.current) > 0.02) {
+      lastPinchProgressRef.current = progress;
+      setPinchProgress(progress);
+    }
   }, []);
 
   return useMemo(
-    () => ({ processFrame, pointingPosition }),
-    [processFrame, pointingPosition],
+    () => ({ processFrame, pointingPosition, pinchProgress }),
+    [processFrame, pointingPosition, pinchProgress],
   );
 }
 
