@@ -224,14 +224,16 @@ export function SessionView({ workoutId }: SessionViewProps) {
     [],
   );
 
-  const pauseSession = useCallback(() => {
-    setPaused(true);
-    audioRef.current?.pause();
-  }, []);
-
-  const resumeSession = useCallback(() => {
-    setPaused(false);
-    audioRef.current?.play().catch(() => {});
+  const togglePauseSession = useCallback(() => {
+    setPaused((prev) => {
+      const next = !prev;
+      if (next) {
+        audioRef.current?.pause();
+      } else {
+        audioRef.current?.play().catch(() => {});
+      }
+      return next;
+    });
   }, []);
 
   const goToExercise = useCallback((next: number, dir: 1 | -1) => {
@@ -281,12 +283,10 @@ export function SessionView({ workoutId }: SessionViewProps) {
   const handleControlClick = useCallback(() => {
     if (screen === "detail") {
       startTimer();
-    } else if (paused) {
-      resumeSession();
     } else {
-      pauseSession();
+      togglePauseSession();
     }
-  }, [screen, paused, startTimer, resumeSession, pauseSession]);
+  }, [screen, startTimer, togglePauseSession]);
 
   const handleLeftClick = useCallback(() => {
     if (screen === "detail") goBack();
@@ -322,11 +322,7 @@ export function SessionView({ workoutId }: SessionViewProps) {
       },
       "pause-start": {
         contexts: ["active"],
-        handler: pauseSession,
-      },
-      "pause-end": {
-        contexts: ["active"],
-        handler: resumeSession,
+        handler: togglePauseSession,
       },
       "pointing-start": {
         contexts: ["detail", "active"],
@@ -457,73 +453,106 @@ export function SessionView({ workoutId }: SessionViewProps) {
         </Button>
 
         {current && (
-          <div className="flex items-center gap-4 md:gap-10">
-            <NavArrowButton
-              direction="left"
-              label={
-                screen === "detail" ? "Previous exercise" : "Back to exercise"
-              }
-              onClick={handleLeftClick}
-              demoVideoSrc={gestureDemoVideos.swipeRight}
-              isDemoing={activeDemoTarget === "left"}
-            />
+          <div className="flex flex-col items-center gap-6 md:gap-8">
+            <div className="flex items-center gap-4 md:gap-10">
+              <NavArrowButton
+                direction="left"
+                label={
+                  screen === "detail"
+                    ? "Previous exercise"
+                    : "Back to exercise"
+                }
+                onClick={handleLeftClick}
+                demoVideoSrc={gestureDemoVideos.swipeRight}
+                isDemoing={activeDemoTarget === "left"}
+                className="hidden md:flex"
+              />
 
-            <div className="relative w-full max-w-4xl overflow-hidden">
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.div
-                  key={current.id}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  className="flex flex-col items-center gap-6 text-center"
-                >
-                  <ExerciseMedia
-                    videoSrc={current.videoSrc}
-                    name={current.name}
-                  />
+              <div className="relative w-full max-w-4xl overflow-hidden">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={current.id}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    className="flex flex-col items-center gap-4 text-center md:gap-6"
+                  >
+                    <ExerciseMedia
+                      videoSrc={current.videoSrc}
+                      name={current.name}
+                    />
 
-                  <div>
-                    <h1 className="text-3xl font-semibold text-foreground md:text-4xl">
-                      {current.name}
-                    </h1>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {index + 1} of {sessionExercises.length}
-                    </p>
-                  </div>
+                    <div>
+                      <h1 className="text-2xl font-semibold text-foreground md:text-4xl">
+                        {current.name}
+                      </h1>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {index + 1} of {sessionExercises.length}
+                      </p>
+                    </div>
 
-                  {screen === "detail" && (
-                    <p className="text-muted-foreground">
-                      {current.description}
-                    </p>
-                  )}
+                    {screen === "detail" && (
+                      <p className="text-sm text-muted-foreground md:text-base">
+                        {current.description}
+                      </p>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
 
-                  <SessionControlButton
-                    state={controlState}
-                    progress={progress}
-                    secondsLeft={secondsLeft}
-                    onClick={handleControlClick}
-                    demoVideoSrc={gestureDemoVideos.pinch}
-                    isDemoing={activeDemoTarget === "control"}
-                  />
+              <NavArrowButton
+                direction="right"
+                label={
+                  screen === "detail" ? "Next exercise" : "Back to exercise"
+                }
+                onClick={handleRightClick}
+                demoVideoSrc={gestureDemoVideos.swipeLeft}
+                isDemoing={activeDemoTarget === "right"}
+                className="hidden md:flex"
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <NavArrowButton
+                direction="left"
+                label={
+                  screen === "detail"
+                    ? "Previous exercise"
+                    : "Back to exercise"
+                }
+                onClick={handleLeftClick}
+                demoVideoSrc={gestureDemoVideos.swipeRight}
+                isDemoing={activeDemoTarget === "left"}
+                className="flex md:hidden"
+              />
 
-                  <EndWorkoutButton
-                    onClick={openExitDialog}
-                    demoVideoSrc={gestureDemoVideos.fist}
-                    isDemoing={activeDemoTarget === "exit"}
-                  />
-                </motion.div>
-              </AnimatePresence>
+              <SessionControlButton
+                state={controlState}
+                progress={progress}
+                secondsLeft={secondsLeft}
+                onClick={handleControlClick}
+                demoVideoSrc={gestureDemoVideos.pinch}
+                isDemoing={activeDemoTarget === "control"}
+              />
+
+              <NavArrowButton
+                direction="right"
+                label={
+                  screen === "detail" ? "Next exercise" : "Back to exercise"
+                }
+                onClick={handleRightClick}
+                demoVideoSrc={gestureDemoVideos.swipeLeft}
+                isDemoing={activeDemoTarget === "right"}
+                className="flex md:hidden"
+              />
             </div>
 
-            <NavArrowButton
-              direction="right"
-              label={screen === "detail" ? "Next exercise" : "Back to exercise"}
-              onClick={handleRightClick}
-              demoVideoSrc={gestureDemoVideos.swipeLeft}
-              isDemoing={activeDemoTarget === "right"}
+            <EndWorkoutButton
+              onClick={openExitDialog}
+              demoVideoSrc={gestureDemoVideos.fist}
+              isDemoing={activeDemoTarget === "exit"}
             />
           </div>
         )}

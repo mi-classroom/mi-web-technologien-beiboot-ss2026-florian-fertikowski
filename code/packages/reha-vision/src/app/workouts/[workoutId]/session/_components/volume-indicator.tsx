@@ -18,9 +18,15 @@ interface VolumeIndicatorProps {
 const DEMO_CYCLE_MS = 3000;
 
 /**
- * Volume control. Always visible (bottom-right corner, small) —
- * this is the click/drag-accessible equivalent of the pointing-gesture volume control.
- * Real pointing input grows it and moves it next to the video (`expanded`)
+ * Volume control. Always visible (bottom-right corner) — the
+ * click/drag-accessible equivalent of the pointing-gesture volume
+ * control. Real pointing input grows it and moves it next to the
+ * video (`expanded`).
+ *
+ * Below the `md` breakpoint, the percentage text and slider track
+ * collapse away, leaving only the speaker icon — full-size text
+ * plus a 96px-tall drag track ate real space on narrow phone
+ * screens for a control most sessions barely touch.
  */
 export function VolumeIndicator({
   volume,
@@ -30,6 +36,7 @@ export function VolumeIndicator({
 }: VolumeIndicatorProps) {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const [demoDotPosition, setDemoDotPosition] = useState(0.5);
+  const [manuallyExpanded, setManuallyExpanded] = useState(false);
 
   useEffect(() => {
     if (!isDemoing) return;
@@ -48,6 +55,10 @@ export function VolumeIndicator({
   }, [isDemoing]);
 
   const percent = Math.round(volume * 100);
+  // On mobile, show the full widget only when something actually
+  // calls for it; on md+ this doesn't matter since the "hidden
+  // below md" classes below only apply under md anyway.
+  const showFull = expanded || isDemoing || manuallyExpanded;
 
   const updateFromClientY = useCallback(
     (clientY: number) => {
@@ -81,10 +92,15 @@ export function VolumeIndicator({
           : "translateY(-50%) scale(1)",
       }}
     >
-      <span className="text-md tabular-nums text-foreground/80">
+      <span
+        className={cn(
+          "text-md tabular-nums text-foreground/80",
+          !showFull && "hidden md:inline",
+        )}
+      >
         {percent}%
       </span>
-      <div className="relative">
+      <div className={cn("relative", !showFull && "hidden md:block")}>
         <div
           ref={trackRef}
           onPointerDown={handlePointerDown}
@@ -119,9 +135,16 @@ export function VolumeIndicator({
           </div>
         )}
       </div>
-      <span aria-hidden="true">
+      <button
+        type="button"
+        onClick={() => setManuallyExpanded((v) => !v)}
+        aria-label={
+          showFull ? "Lautstärkeregler einklappen" : "Lautstärkeregler öffnen"
+        }
+        className="md:pointer-events-none md:cursor-default"
+      >
         {percent === 0 ? <VolumeX /> : percent < 50 ? <Volume1 /> : <Volume2 />}
-      </span>
+      </button>
     </Card>
   );
 }

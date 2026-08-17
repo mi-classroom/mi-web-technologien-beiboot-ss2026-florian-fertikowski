@@ -46,7 +46,7 @@ export function ExerciseMedia({ videoSrc, name }: ExerciseMediaProps) {
       loop
       playsInline
       aria-label={`Demonstration of ${name}`}
-      className="h-[clamp(10rem,32vh,28rem)] w-auto max-w-full rounded-2xl object-cover shadow-2xl"
+      className="h-[clamp(12rem,34vh,28rem)] w-auto max-w-full rounded-2xl object-cover shadow-2xl"
     />
   );
 }

@@ -39,8 +39,8 @@ export function CameraStatusPanel({
   const handleClick = action.kind === "enable" ? onEnable : onDisable;
 
   return (
-    <div className="absolute top-6 flex items-center gap-3 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-sm text-white/80 backdrop-blur-sm">
-      <span>
+    <div className="absolute top-6 left-1/2 flex max-w-[calc(100%-3rem)] -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-xs text-white/80 backdrop-blur-sm md:text-sm">
+      <span className="truncate">
         {status === "error" && error
           ? `${STATUS_TEXT.error}: ${error}`
           : STATUS_TEXT[status]}
@@ -48,7 +48,7 @@ export function CameraStatusPanel({
       <button
         type="button"
         onClick={handleClick}
-        className="font-medium text-white underline-offset-4 hover:underline"
+        className="shrink-0 font-medium text-white underline-offset-4 hover:underline"
       >
         {action.label}
       </button>

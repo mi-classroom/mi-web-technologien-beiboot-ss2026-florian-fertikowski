@@ -5,11 +5,11 @@ import { cn } from "@/lib/utils";
  * Full-viewport wrapper for Big Picture Mode: four camera-viewfinder-style
  * corner brackets framing the content area. Purely aesthetic —
  * evokes "gesture recognition is active here" without actually
- * showing a camera preview
+ * showing a camera preview.
  */
 export function CornerFrame({ children }: { children: ReactNode }) {
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-background p-8 md:p-16">
+    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-x-hidden overflow-y-auto bg-background p-8 md:p-16">
       <CornerBracket corner="tl" />
       <CornerBracket corner="tr" />
       <CornerBracket corner="bl" />

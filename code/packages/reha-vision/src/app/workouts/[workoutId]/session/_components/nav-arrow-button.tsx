@@ -10,6 +10,7 @@ interface NavArrowButtonProps {
   onClick: () => void;
   demoVideoSrc?: string;
   isDemoing?: boolean;
+  className?: string;
 }
 
 /**
@@ -23,6 +24,7 @@ export function NavArrowButton({
   onClick,
   demoVideoSrc,
   isDemoing = false,
+  className,
 }: NavArrowButtonProps) {
   const showDemo = isDemoing && !!demoVideoSrc;
 
@@ -33,7 +35,8 @@ export function NavArrowButton({
       onClick={onClick}
       aria-label={label}
       className={cn(
-        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-300 size-28 md:size-32",
+        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-300 size-16 md:size-32",
+        className,
       )}
     >
       {showDemo ? (
@@ -47,9 +50,9 @@ export function NavArrowButton({
           className="h-full w-full object-cover"
         />
       ) : direction === "left" ? (
-        <ChevronLeft className="size-15" />
+        <ChevronLeft className="size-8 md:size-15" />
       ) : (
-        <ChevronRight className="size-15" />
+        <ChevronRight className="size-8 md:size-15" />
       )}
     </Button>
   );

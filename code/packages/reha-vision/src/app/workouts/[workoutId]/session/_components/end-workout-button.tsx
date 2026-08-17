@@ -28,12 +28,12 @@ export function EndWorkoutButton({
       variant="destructive"
       onClick={onClick}
       className={cn(
-        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-300 size-25",
+        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-300 size-16 md:size-25",
       )}
     >
       <span
         className={cn(
-          "flex shrink-0 items-center justify-center overflow-hidden rounded-full size-20",
+          "flex shrink-0 items-center justify-center overflow-hidden rounded-full size-12 md:size-20",
         )}
         aria-hidden="true"
       >
@@ -48,7 +48,7 @@ export function EndWorkoutButton({
             className="h-full w-full object-cover"
           />
         ) : (
-          <Square className="size-8 text-white fill-background" />
+          <Square className="size-6 text-white fill-background md:size-8" />
         )}
       </span>
     </Button>
