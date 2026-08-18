@@ -206,7 +206,7 @@ recognizer.setActiveContext("detail");
 Full comparison of alternatives (switch-in-handler,
 register-on-mount, consumer-side wrapper) and the reasoning for
 choosing library-level filtering over all three is in
-[ADR-0011](./adr/adr-0011-context-filtering.md).
+[ADR-0011](./adr/0011-context-filtering.md).
 
 ## Summary
 
