@@ -66,7 +66,7 @@ export function SessionControlButton({
       className={cn(
         "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full",
         "border border-foreground/15 bg-primary hover:bg-primary/80 text-white backdrop-blur-sm",
-        "transition-all duration-300 size-24 md:size-36",
+        "transition-all duration-300 size-24 md:size-[clamp(6rem,5.625vw,9rem)]",
       )}
     >
       {showDemo ? (
