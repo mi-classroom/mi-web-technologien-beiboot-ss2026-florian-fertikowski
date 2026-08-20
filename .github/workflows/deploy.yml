@@ -31,6 +31,13 @@ jobs:
       - run: npm run build --workspace=gesture-lib
       - run: npm run build --workspace=reha-vision
 
+      # GitHub Pages runs deployments through Jekyll by default,
+      # which ignores any folder starting with an underscore —
+      # including Next.js's own _next/ build output, where every
+      # CSS/JS asset lives. An empty .nojekyll file tells Pages to
+      # skip Jekyll processing entirely and serve files as-is.
+      - run: touch packages/reha-vision/out/.nojekyll
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: packages/reha-vision/out
