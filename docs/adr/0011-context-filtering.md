@@ -1,10 +1,10 @@
 # ADR-0011: Context filtering for event subscriptions
 
-* Status: accepted
-* Workload: 4h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [4](https://github.com/mi-classroom/mi-master-wt-beiboot-2026/issues/4)
-* Date: 2026-XX-XX
+- Status: accepted
+- Workload: 4h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [4](https://github.com/mi-classroom/mi-master-wt-beiboot-2026/issues/4)
+- Date: 2026-XX-XX
 
 ## Context
 
@@ -12,10 +12,10 @@ While building the reha-demo app in issue #4, one API friction
 kept recurring across every screen: the same gesture had to mean
 different things depending on which screen was active.
 
-- On the *overview* screen, `pinch-end` means "open the highlighted
+- On the _overview_ screen, `pinch-end` means "open the highlighted
   card".
-- On the *detail* screen, `pinch-end` means "start the exercise".
-- On the *active* screen, `pinch-end` means "toggle the pause".
+- On the _detail_ screen, `pinch-end` means "start the exercise".
+- On the _active_ screen, `pinch-end` means "toggle the pause".
 
 Same event, three different actions, chosen by app state that the
 library knows nothing about.
@@ -24,7 +24,9 @@ The library's original event model was: register once per event
 type, handler fires on every occurrence.
 
 ```ts
-recognizer.on("pinch-end", (event) => { /* now what? */ });
+recognizer.on("pinch-end", (event) => {
+  /* now what? */
+});
 ```
 
 The consumer has three choices, all of them awkward.

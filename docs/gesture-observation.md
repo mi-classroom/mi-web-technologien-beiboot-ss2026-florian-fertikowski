@@ -20,13 +20,13 @@
 
 ### Pinch fires on rotated closed hand
 
-When the hand is rotated so the palm is not facing the camera 
-(sideways or palm towards the back) the 2D projection of thumb-tip 
-and index-tip collapses. In camera-space the two landmarks appear 
-close together, even though the fingers are not touching in 3D space. 
+When the hand is rotated so the palm is not facing the camera
+(sideways or palm towards the back) the 2D projection of thumb-tip
+and index-tip collapses. In camera-space the two landmarks appear
+close together, even though the fingers are not touching in 3D space.
 The detector reads this as a pinch and fires.
 
-Triggering this requires rotating the hand in a way that only rarely naturally 
+Triggering this requires rotating the hand in a way that only rarely naturally
 occurs and the added complexity would have not been justified by the rate
 of occurrence in the test scenario and was documented as a known
 limitation rather than fixed in this iteration.

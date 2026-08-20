@@ -1,10 +1,10 @@
 # ADR-0005: Use generic web UI with rehabilitation as anchor scenario
 
-* Status: accepted
-* Workload: 0,25h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [2](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/2)
-* Date: 2026-05-31
+- Status: accepted
+- Workload: 0,25h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [2](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/2)
+- Date: 2026-05-31
 
 ## Context
 
@@ -34,7 +34,7 @@ For the vocabulary level:
 ## Decision
 
 **Application context: Generic web UI with rehabilitation as anchor scenario**
-**Vocabulary level: hybrid.** 
+**Vocabulary level: hybrid.**
 Entries are written at the level of generic UI component interactions, with an additional column showing the rehab-specific instantiation of each interaction.
 
 ## Pros and Cons of the Options
@@ -60,7 +60,7 @@ Entries are written at the level of generic UI component interactions, with an a
 - Real and well-documented problem
 - Hands and full body are genuinely unavailable for touch input during the exercise —> gesture control is not just a gimmick
 - Allows for a richer interaction set
-- Allows later extensions that go beyond "gesture as input": rep counting, form checking, etc. 
+- Allows later extensions that go beyond "gesture as input": rep counting, form checking, etc.
 
 **Cons**
 

@@ -1,10 +1,10 @@
 # ADR-0008: Library API design
 
-* Status: accepted
-* Workload: 2h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [3](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/3)
-* Date: 2026-05-XX
+- Status: accepted
+- Workload: 2h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [3](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/3)
+- Date: 2026-05-XX
 
 ## Context
 
@@ -326,10 +326,10 @@ For **input type**:
 - The library can be implemented as a small core (the recognizer) plus separate gesture modules, each importable individually
 - New gestures fit the same `GestureDetector` interface
 - Documentation must cover:
-    - Quickstart with the recognizer + a few built-ins
-    - The `GestureDetector` interface
-    - Module augmentation for custom event types
-    - Per-gesture options reference
+  - Quickstart with the recognizer + a few built-ins
+  - The `GestureDetector` interface
+  - Module augmentation for custom event types
+  - Per-gesture options reference
 - The four built-in gestures (Pinch, Swipe, Pause, Pointing)
   exercise different event shapes: held-with-state (Pinch),
   transient-one-shot (Swipe), held-with-flag (Pause), and

@@ -1,73 +1,32 @@
-# React + TypeScript + Vite
+# reha-demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A three-screen static rehab-exercise demo, built as `gesture-lib`'s first real external consumer (Issue #4) — a
+deliberate stress-test of the library's public API, not a polished product.
 
-Currently, two official plugins are available:
+## What it demonstrates
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Overview** — a grid of exercise cards. Pointing highlights a card, pinch opens it.
+- **Detail** — full description of one exercise. Swipe browses to the previous/next exercise, pinch starts a timer.
+- **Active** — a countdown timer. Open-palm hold pauses and resumes it; swipe aborts back to Detail.
 
-## React Compiler
+All four of the library's built-in gestures (Pinch, Swipe, Pause, Pointing) are used here. Every screen also remains
+fully usable with a mouse.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Running locally
 
-## Expanding the ESLint configuration
+`gesture-lib` needs to be built at least once before this app can import it (it consumes the built package, not the
+source):
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+npm run build --workspace=gesture-lib   # skip if already built
+npm run dev --workspace=reha-demo
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open the URL Vite prints (typically [http://localhost:5173](http://localhost:5173)).
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+This app requires camera permission and a browser with `getUserMedia` support (Chrome, Firefox, Edge).
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## Why this exists
+
+This app's job wasn't to be a good rehab app, it was to find out where `gesture-lib`'s public API held up under real use
+and where it didn't, by actually building something against it rather than reasoning about the API in the abstract.

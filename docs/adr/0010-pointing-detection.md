@@ -1,10 +1,10 @@
 # ADR-0010: Pointing detection algorithm
 
-* Status: accepted
-* Workload: 1.5h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [3](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/3)
-* Date: 2026-05-XX
+- Status: accepted
+- Workload: 1.5h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [3](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/3)
+- Date: 2026-05-XX
 
 ## Context
 
@@ -86,7 +86,7 @@ position. The end event additionally carries a `durationMs`, like
   trigger 30 FPS re-renders.
 - The hook (use-gesture-recognizer.ts) mitigates this by
   applying a position-delta threshold before pushing into React
-  state. That is a *demo-side* concern, not a library concern.
+  state. That is a _demo-side_ concern, not a library concern.
 
 #### Throttled emission
 
@@ -210,7 +210,7 @@ poses.
 
 Pointing relies on the same `isFingerExtended` check used by
 Pause, which measures the 2D distance from tip to MCP. When the
-index finger extends *into* the camera (the user points "at the
+index finger extends _into_ the camera (the user points "at the
 screen" in 3D), the 2D projection collapses tip and MCP near
 each other. The detector reads this as a curled finger and the
 gesture does not trigger.
@@ -243,7 +243,7 @@ the application layer if needed.
 ## Default parameters
 
 | Parameter                            | Default | Notes                                                   |
-|--------------------------------------|---------|---------------------------------------------------------|
+| ------------------------------------ | ------- | ------------------------------------------------------- |
 | `indexExtendedThreshold`             | 0.7     | Same shape as Pause; may need lowering on smaller hands |
 | `otherFingersCurledThreshold`        | 0.5     | The complement of extension                             |
 | `releaseIndexExtendedThreshold`      | 0.55    | Hysteresis — looser than activate                       |

@@ -9,9 +9,9 @@
 - **Webcam:** USB 2.0 FHD UVC WebCam, max. 1920×1080 (used at 1280×720)
 - **Lighting:** Standard desk setup, artificial overhead light
 - **Distances tested:**
-    - Short: ~0.4 m (sitting directly in front of the camera)
-    - Medium: ~1.5 m
-    - Long: ~4 m (room limit)
+  - Short: ~0.4 m (sitting directly in front of the camera)
+  - Medium: ~1.5 m
+  - Long: ~4 m (room limit)
 
 ## Stable
 
@@ -59,14 +59,14 @@ slider value, etc.) will feel shaky and will need a smoothing layer.
 
 ## Failure Cases
 
-| Condition | Observation                                                      |
-| --- |------------------------------------------------------------------|
-| Hand behind the other hand (palm occluded) | Sometimes recognized, sometimes lost                                  |
-| Thumbs Up from the front | Inconsistent recognition; classified more reliably from the side |
-| Open Palm rotated sideways | Often lost — front-facing palm is the reliable case              |
-| Fast hand motion | Landmarks visibly lag motion; brief gaps possible during sweeps  |
-| Distance > 1.5 m (Hand / Gesture) | Detection becomes unreliable                                     |
-| Distance ≈ 4 m (Hand / Gesture) | No detection at all                                              |
+| Condition                                  | Observation                                                      |
+| ------------------------------------------ | ---------------------------------------------------------------- |
+| Hand behind the other hand (palm occluded) | Sometimes recognized, sometimes lost                             |
+| Thumbs Up from the front                   | Inconsistent recognition; classified more reliably from the side |
+| Open Palm rotated sideways                 | Often lost — front-facing palm is the reliable case              |
+| Fast hand motion                           | Landmarks visibly lag motion; brief gaps possible during sweeps  |
+| Distance > 1.5 m (Hand / Gesture)          | Detection becomes unreliable                                     |
+| Distance ≈ 4 m (Hand / Gesture)            | No detection at all                                              |
 
 The rotation-sensitivity of the Gesture model is the most actionable
 finding here: the same physical gesture is classified differently
@@ -79,28 +79,28 @@ per-frame inference time, GPU delegate active.
 
 ### Baseline (one subject at ~1 m, single hand / full body in frame)
 
-| Mode | FPS | Inference per frame |
-| --- | --- | --- |
-| Hands | ~30 | ~30 ms |
-| Pose (Lite) | ~50 | ~20 ms |
-| Gesture | ~30 | ~30 ms |
+| Mode        | FPS | Inference per frame |
+| ----------- | --- | ------------------- |
+| Hands       | ~30 | ~30 ms              |
+| Pose (Lite) | ~50 | ~20 ms              |
+| Gesture     | ~30 | ~30 ms              |
 
 ### Effect of scene contents
 
-| Scenario | Hands FPS | Gesture FPS | Pose FPS |
-| --- | --- | --- | --- |
-| No subject in frame | ~60 | ~60 | 47-51 |
-| One hand in frame | ~32 | ~32 | — |
-| Two hands in frame | ~29-30 | ~29-30 | — |
-| Full body in frame | — | — | 47-51 |
+| Scenario            | Hands FPS | Gesture FPS | Pose FPS |
+| ------------------- | --------- | ----------- | -------- |
+| No subject in frame | ~60       | ~60         | 47-51    |
+| One hand in frame   | ~32       | ~32         | —        |
+| Two hands in frame  | ~29-30    | ~29-30      | —        |
+| Full body in frame  | —         | —           | 47-51    |
 
 Two patterns stand out:
 
 1. **Hand and Gesture FPS roughly halves when work appears.** With no
    detection the loop runs at ~60 FPS, and adding
    a hand drops it to ~32. A second hand costs only a small amount
-   on top, so the per-frame cost is dominated by *running the model
-   at all* rather than by the number of detections.
+   on top, so the per-frame cost is dominated by _running the model
+   at all_ rather than by the number of detections.
 2. **Pose is insensitive to whether a subject is present.** FPS stays
    in the 47-51 range either way.
 

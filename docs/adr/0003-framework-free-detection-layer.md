@@ -1,10 +1,10 @@
 # ADR-0003: Keep the detection layer framework-free
 
-* Status: accepted
-* Workload: 2,5h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [1](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/1)
-* Date: 2026-05-17
+- Status: accepted
+- Workload: 2,5h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [1](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/1)
+- Date: 2026-05-17
 
 ## Context
 
