@@ -1,15 +1,15 @@
 # Issue #4 reflection: building a consumer app against the gesture library
 
-* Issue: [4](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/7)
-* App: `packages/reha-demo` — a hands-free navigation demo for a
+- Issue: [4](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/7)
+- App: `packages/reha-demo` — a hands-free navigation demo for a
   static rehab-exercise page (overview / detail / active-timer
   screens), using all four library gestures
-* Related decision record: [ADR-0011](./adr/0011-context-filtering.md)
+- Related decision record: [ADR-0011](./adr/0011-context-filtering.md)
 
 ## Goal
 
 Issue #3 produced a library with a documented, plug-in-style public API. This issue asked for the opposite perspective:
-build something *against* that API, as an external consumer would, and find out where it holds up and where it doesn't.
+build something _against_ that API, as an external consumer would, and find out where it holds up and where it doesn't.
 
 This document collects what came out of that exercise. One of these observations led to an actual library change (
 context filtering, ADR-0011);
@@ -33,7 +33,7 @@ All screens remain fully usable with a mouse; gestures are an alternative input,
 Even having built the library, the first real question when starting the new app was "how do I actually get frames into
 this?" — not because the library's `update(input, timestamp)` signature is unclear, but because there is no shipped
 example of
-the *other end*: loading MediaPipe, running a detection loop, and wiring a `<video>` element.
+the _other end_: loading MediaPipe, running a detection loop, and wiring a `<video>` element.
 That boilerplate (FilesetResolver, `HandLandmarker.createFromOptions`, a `requestAnimationFrame` loop keyed on
 `video.currentTime`) had to be written again, from scratch.
 
@@ -57,7 +57,8 @@ start the
 exercise" on Detail, and "toggle pause" on Active. The original API gives one global subscription per event type:
 
 ```ts
-recognizer.on("pinch-end", (event) => { /* now what? */
+recognizer.on("pinch-end", (event) => {
+  /* now what? */
 });
 ```
 
@@ -90,7 +91,7 @@ full comparison of alternatives.
 ### 3. Reading current app state from a gesture handler still needs a ref
 
 Even after moving context filtering into the library, one remaining pattern didn't go away: the Overview screen's pinch
-handler needs to know *which* card is currently highlighted by pointing, to know what to open. Since the handler is
+handler needs to know _which_ card is currently highlighted by pointing, to know what to open. Since the handler is
 invoked
 asynchronously by the recognizer, reading `highlightedId` directly from the component closure would see a stale value
 from whenever
@@ -98,7 +99,7 @@ the handler was subscribed. The fix is the same one used elsewhere in this proje
 gesture hooks): mirror the state into a ref that's updated on every render, and read the ref inside the handler.
 
 **Outcome: accepted as a general React pattern, not a library problem.** Context filtering removes the need to branch on
-*which screen* a handler is for, but any handler that needs the *current value* of some piece of UI state will always
+_which screen_ a handler is for, but any handler that needs the _current value_ of some piece of UI state will always
 need this
 kind of ref, gesture library or not.
 
@@ -170,11 +171,11 @@ recognizer:
 **Outcome: not a library or MediaPipe bug — a framing issue.**
 Worth keeping in the writeup for two reasons. First, it's a
 reminder that a low-jitter, spatially stable false positive is
-often a *specific real object* in frame, and worth checking for
+often a _specific real object_ in frame, and worth checking for
 directly (cover the camera, remove objects near the frame edges)
 before reaching for confidence-threshold tuning. Second, and more
 relevant to the library's design: `gesture-lib` has no way to know
-or care *what* produced the landmarks it's given. A shirt collar
+or care _what_ produced the landmarks it's given. A shirt collar
 that geometrically satisfies "four fingers extended, thumb
 abducted" produces a valid Pause event — correctly, according to
 the detector's own logic. Input quality (camera framing, what's
@@ -194,9 +195,9 @@ listed values; handlers without `contexts` keep firing unconditionally, so every
 demo, in earlier code) keeps working unchanged.
 
 ```ts
-recognizer.on("pinch-end", openHighlighted, {contexts: ["overview"]});
-recognizer.on("pinch-end", startExercise, {contexts: ["detail"]});
-recognizer.on("pinch-end", togglePause, {contexts: ["active"]});
+recognizer.on("pinch-end", openHighlighted, { contexts: ["overview"] });
+recognizer.on("pinch-end", startExercise, { contexts: ["detail"] });
+recognizer.on("pinch-end", togglePause, { contexts: ["active"] });
 
 recognizer.setActiveContext("overview");
 // ... later, on screen change:
@@ -206,15 +207,15 @@ recognizer.setActiveContext("detail");
 Full comparison of alternatives (switch-in-handler,
 register-on-mount, consumer-side wrapper) and the reasoning for
 choosing library-level filtering over all three is in
-[ADR-0011](./adr/adr-0011-context-filtering.md).
+[ADR-0011](./adr/0011-context-filtering.md).
 
 ## Summary
 
-| # | Observation                                        | Outcome                                                             |
-|---|----------------------------------------------------|---------------------------------------------------------------------|
-| 1 | Camera/detection setup boilerplate not obvious     | Documented; quickstart example recommended, not a library change    |
-| 2 | Same gesture needs different meaning per screen    | **Fixed** — context filtering added (ADR-0011)                      |
-| 3 | Reading current app state in a handler needs a ref | Accepted — general React pattern, not library-specific              |
-| 4 | pinch-start vs. pinch-end for "activate"           | Accepted — UX judgment call, both events already available          |
-| 5 | Swipe occasionally cross-triggers Pinch/Pause      | Documented — consequence of ADR-0008's no-mutual-exclusion decision |
-| 6 | Open Palm false-positive with no hand in frame     | Documented                                                          |
+| #   | Observation                                        | Outcome                                                             |
+| --- | -------------------------------------------------- | ------------------------------------------------------------------- |
+| 1   | Camera/detection setup boilerplate not obvious     | Documented; quickstart example recommended, not a library change    |
+| 2   | Same gesture needs different meaning per screen    | **Fixed** — context filtering added (ADR-0011)                      |
+| 3   | Reading current app state in a handler needs a ref | Accepted — general React pattern, not library-specific              |
+| 4   | pinch-start vs. pinch-end for "activate"           | Accepted — UX judgment call, both events already available          |
+| 5   | Swipe occasionally cross-triggers Pinch/Pause      | Documented — consequence of ADR-0008's no-mutual-exclusion decision |
+| 6   | Open Palm false-positive with no hand in frame     | Documented                                                          |

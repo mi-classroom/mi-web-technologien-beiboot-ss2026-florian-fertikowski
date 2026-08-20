@@ -1,10 +1,10 @@
 # ADR-0001: Use MediaPipe Tasks Vision for body tracking
 
-* Status: accepted
-* Workload: 3h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [1](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/1)
-* Date: 2026-05-17
+- Status: accepted
+- Workload: 3h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [1](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/1)
+- Date: 2026-05-17
 
 ## Context
 

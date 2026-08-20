@@ -1,10 +1,10 @@
 # ADR-0006: Pinch detection algorithm
 
-* Status: accepted
-* Workload: 3h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [2](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/2)
-* Date: 2026-05-31
+- Status: accepted
+- Workload: 3h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [2](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/2)
+- Date: 2026-05-31
 
 ## Context
 
@@ -146,7 +146,7 @@ All parameters (thresholds, dwell time, smoothing factor) are configurable via t
 The defaults below were chosen during initial testing:
 
 | Parameter             | Default | Rationale                                                                |
-|-----------------------|---------|--------------------------------------------------------------------------|
+| --------------------- | ------- | ------------------------------------------------------------------------ |
 | `activateThreshold`   | 0.3     | Fingers must clearly touch, not just be near each other                  |
 | `deactivateThreshold` | 0.45    | Enough hysteresis to absorb residual jitter after smoothing              |
 | `dwellTimeMs`         | 200     | Short enough to feel responsive, long enough to reject reflexive touches |
@@ -155,6 +155,7 @@ The defaults below were chosen during initial testing:
 ## State machine
 
 Per-hand state transitions:
+
 ```mermaid
 stateDiagram-v2
     [*] --> IDLE

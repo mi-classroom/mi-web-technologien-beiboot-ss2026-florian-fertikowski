@@ -1,10 +1,10 @@
 # ADR-0007: Swipe detection algorithm
 
-* Status: accepted
-* Workload: 2h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [2](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/2)
-* Date: 2026-05-31
+- Status: accepted
+- Workload: 2h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [2](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/2)
+- Date: 2026-05-31
 
 ## Context
 
@@ -84,7 +84,7 @@ and that the motion is horizontally dominant over vertical motion.
 
 **Cons**
 
-- The detector fires when the gesture is *complete*, not when it starts, so there is no equivalent of Pinch's "candidate" phase for UI feedback during the gesture
+- The detector fires when the gesture is _complete_, not when it starts, so there is no equivalent of Pinch's "candidate" phase for UI feedback during the gesture
 
 ---
 
@@ -174,18 +174,18 @@ Per frame, for each detected hand:
 2. Drop older buffer entries
 3. If cooldown is active OR buffer has fewer than 2 entries, skip.
 4. Compute over the buffer:
-    - dx, dy (net displacement (last - first))
-    - duration (time span of the buffer)
-    - refHandLength (median hand-length across buffer entries)
-    - dxNorm (hand-lengths)
-    - speedNorm (hand-lengths per second)
-    - totalPath (normalized sum of frame-to-frame distances)
-    - straightness
+   - dx, dy (net displacement (last - first))
+   - duration (time span of the buffer)
+   - refHandLength (median hand-length across buffer entries)
+   - dxNorm (hand-lengths)
+   - speedNorm (hand-lengths per second)
+   - totalPath (normalized sum of frame-to-frame distances)
+   - straightness
 5. Reject if:
-    - not horizontal
-    - not enough distance
-    - not enough speed
-    - not enough straightness
+   - not horizontal
+   - not enough distance
+   - not enough speed
+   - not enough straightness
 6. If both hands qualify in the same frame, pick the one with the larger dxNorm and ignore the other.
 7. Fire swipe-left or swipe-right based on sign of dx.
 8. Clear all hand buffers and set a cooldown on all hands.

@@ -1,10 +1,10 @@
 # ADR-0009: Pause detection algorithm
 
-* Status: accepted
-* Workload: 1h
-* Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
-* Issue: [3](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/3)
-* Date: 2026-05-XX
+- Status: accepted
+- Workload: 1h
+- Decider: [Florian Fertikowski](https://github.com/florian-fertikowski)
+- Issue: [3](https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski/issues/3)
+- Date: 2026-05-XX
 
 ## Context
 
@@ -19,8 +19,8 @@ Pointing in [ADR-0010](./0010-pointing-detection.md).
 
 A second design question is how to express "open palm" from
 landmarks, since unlike Pinch (one tip distance) or Swipe (one
-trajectory) Open Palm is a *composite* posture: all four fingers
-extended *and* thumb abducted. The check has to combine multiple
+trajectory) Open Palm is a _composite_ posture: all four fingers
+extended _and_ thumb abducted. The check has to combine multiple
 finger states without becoming flaky on any one.
 
 ## Considered Options
@@ -47,7 +47,7 @@ For **thumb-abduction check**:
 - **Tip-to-index-MCP distance only**: thumb is abducted if its
   tip is far from the index MCP.
 - **Distance plus direction**: also require the thumb to extend
-  *sideways* from the hand's long axis, not parallel to it.
+  _sideways_ from the hand's long axis, not parallel to it.
 
 ## Decision
 
@@ -127,7 +127,7 @@ hand action).
 
 **Cons**
 
-- A finger folded *toward the camera* (Z direction) shortens in
+- A finger folded _toward the camera_ (Z direction) shortens in
   2D projection and reads as curled. Documented as a known
   limitation; affects Pointing more than Pause.
 
@@ -159,7 +159,7 @@ hand action).
 **Cons**
 
 - Cannot distinguish a side-abducted thumb (genuine open palm)
-  from a thumb folded *across the palm* (e.g. closing a fist by
+  from a thumb folded _across the palm_ (e.g. closing a fist by
   starting with the thumb). Both have a large distance from
   thumb tip to index MCP in some hand orientations.
 - This caused a real false-positive during integration testing:
@@ -170,7 +170,7 @@ hand action).
 **Pros**
 
 - Distinguishes the two cases by checking that the thumb extends
-  *across* the hand's long axis, not *along* it.
+  _across_ the hand's long axis, not _along_ it.
 - Implementation: compare the angle between the
   wrist-to-middle-MCP vector and the wrist-to-thumb-tip vector.
   A side-abducted thumb produces an angle of ~60-90°. A
@@ -190,7 +190,7 @@ The defaults below started from inspection and were refined
 during integration testing on the author's setup.
 
 | Parameter                   | Default | Tuned value |
-|-----------------------------|---------|-------------|
+| --------------------------- | ------- | ----------- |
 | `activateExtendedThreshold` | 0.7     | 0.6         |
 | `releaseExtendedThreshold`  | 0.55    | 0.45        |
 | `thumbAbductionThreshold`   | 0.5     | 0.35        |
