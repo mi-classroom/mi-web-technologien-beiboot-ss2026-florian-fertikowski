@@ -40,7 +40,7 @@ const WEBCAM_CONSTRAINTS: MediaStreamConstraints = {
   audio: false,
 };
 
-const FIST_HOLD_MS = 5000;
+const FIST_HOLD_MS = 2000;
 
 /**
  * Gesture-demo rotation: each control gets a turn showing its
@@ -423,12 +423,24 @@ export function SessionView({ workoutId }: SessionViewProps) {
       className="fixed inset-0 z-50"
     >
       <CornerFrame>
-        <CameraStatusPanel
-          status={cameraStatus}
-          error={cameraError}
-          onEnable={enableCamera}
-          onDisable={disableCamera}
-        />
+        <div className="absolute inset-x-8 md:inset-x-12 top-6 md:top-12 z-50 flex items-center justify-between gap-3 md:inset-x-6">
+          <CameraStatusPanel
+            status={cameraStatus}
+            error={cameraError}
+            onEnable={enableCamera}
+            onDisable={disableCamera}
+          />
+
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={openExitDialog}
+            aria-label="Close and end workout"
+            className="flex size-10 shrink-0 items-center justify-center rounded-full"
+          >
+            <X className="size-5" />
+          </Button>
+        </div>
 
         <video ref={videoRef} autoPlay playsInline muted className="hidden" />
 
@@ -442,25 +454,13 @@ export function SessionView({ workoutId }: SessionViewProps) {
           />
         )}
 
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={openExitDialog}
-          aria-label="Close and end workout"
-          className="absolute top-14 right-14 size-10 justify-center"
-        >
-          <X className="size-5" />
-        </Button>
-
         {current && (
           <div className="flex flex-col items-center gap-6 md:gap-8">
             <div className="flex items-center gap-4 md:gap-10">
               <NavArrowButton
                 direction="left"
                 label={
-                  screen === "detail"
-                    ? "Previous exercise"
-                    : "Back to exercise"
+                  screen === "detail" ? "Previous exercise" : "Back to exercise"
                 }
                 onClick={handleLeftClick}
                 demoVideoSrc={gestureDemoVideos.swipeRight}
@@ -518,9 +518,7 @@ export function SessionView({ workoutId }: SessionViewProps) {
               <NavArrowButton
                 direction="left"
                 label={
-                  screen === "detail"
-                    ? "Previous exercise"
-                    : "Back to exercise"
+                  screen === "detail" ? "Previous exercise" : "Back to exercise"
                 }
                 onClick={handleLeftClick}
                 demoVideoSrc={gestureDemoVideos.swipeRight}
@@ -547,12 +545,20 @@ export function SessionView({ workoutId }: SessionViewProps) {
                 isDemoing={activeDemoTarget === "right"}
                 className="flex md:hidden"
               />
+
+              <EndWorkoutButton
+                onClick={openExitDialog}
+                demoVideoSrc={gestureDemoVideos.fist}
+                isDemoing={activeDemoTarget === "exit"}
+                className="hidden sm:flex lg:hidden"
+              />
             </div>
 
             <EndWorkoutButton
               onClick={openExitDialog}
               demoVideoSrc={gestureDemoVideos.fist}
               isDemoing={activeDemoTarget === "exit"}
+              className="flex sm:hidden lg:flex"
             />
           </div>
         )}

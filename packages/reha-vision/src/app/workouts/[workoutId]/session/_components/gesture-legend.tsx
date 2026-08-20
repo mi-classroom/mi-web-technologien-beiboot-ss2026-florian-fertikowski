@@ -2,13 +2,19 @@
 
 import { useState } from "react";
 import { HelpCircle } from "lucide-react";
-import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
+
+import fist from "@/assets/fist.svg";
+import palm from "@/assets/palm.svg";
+import pinch from "@/assets/pinch.svg";
+import swipe from "@/assets/swipe.svg";
+import point from "@/assets/point.svg";
 
 interface GestureLegendEntry {
   icon: string;
@@ -18,14 +24,14 @@ interface GestureLegendEntry {
 function getEntries(screen: "detail" | "active"): GestureLegendEntry[] {
   const primary: GestureLegendEntry =
     screen === "detail"
-      ? { icon: "🤏", label: "Starten" }
-      : { icon: "🖐", label: "Pause" };
+      ? { icon: pinch.src, label: "Starten" }
+      : { icon: palm.src, label: "Pause" };
 
   return [
     primary,
-    { icon: "👈👉", label: screen === "detail" ? "Wechseln" : "Zurück" },
-    { icon: "👉", label: "Lautstärke" },
-    { icon: "✊", label: "Beenden" },
+    { icon: swipe.src, label: screen === "detail" ? "Wechseln" : "Zurück" },
+    { icon: point.src, label: "Lautstärke" },
+    { icon: fist.src, label: "Beenden" },
   ];
 }
 
@@ -46,32 +52,36 @@ export function GestureLegend({ screen }: GestureLegendProps) {
 
   return (
     <>
-      <Card className="absolute bottom-14 left-14 hidden text-lg md:block">
-        <CardHeader>
-          <CardTitle>Gesten</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-1.5">
-          {entries.map((entry) => (
-            <div key={entry.label} className="flex items-center gap-2">
-              <span className="w-6 text-center" aria-hidden="true">
-                {entry.icon}
-              </span>
-              <span>{entry.label}</span>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Gesten anzeigen"
-        className="absolute bottom-6 left-6 flex size-10 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/70 backdrop-blur-sm md:hidden"
-      >
-        <HelpCircle className="size-5" aria-hidden="true" />
-      </button>
+      <div className="absolute bottom-14 left-14 hidden flex-col gap-2 rounded-2xl border border-white/10 bg-black/40 p-4 text-lg text-white/80 backdrop-blur-sm md:flex">
+        {entries.map((entry) => (
+          <div key={entry.label} className="flex items-center gap-3">
+            <span className="w-8 text-center">
+              <img
+                className={"invert"}
+                src={entry.icon}
+                height={40}
+                width={40}
+                alt=""
+              />
+            </span>
+            <span>{entry.label}</span>
+          </div>
+        ))}
+      </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger
+          render={
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-label="Gesten anzeigen"
+              className="absolute bottom-6 left-6 flex size-10 items-center justify-center rounded-full border border-white/10 bg-black/40 text-white/70 backdrop-blur-sm md:hidden"
+            >
+              <HelpCircle className="size-5" aria-hidden="true" />
+            </button>
+          }
+        />
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Gesten</DialogTitle>
@@ -79,8 +89,8 @@ export function GestureLegend({ screen }: GestureLegendProps) {
           <div className="flex flex-col gap-3 text-lg">
             {entries.map((entry) => (
               <div key={entry.label} className="flex items-center gap-3">
-                <span className="w-6 text-center" aria-hidden="true">
-                  {entry.icon}
+                <span className="w-6 text-center">
+                  <img src={entry.icon} height={30} width={30} alt="" />
                 </span>
                 <span>{entry.label}</span>
               </div>

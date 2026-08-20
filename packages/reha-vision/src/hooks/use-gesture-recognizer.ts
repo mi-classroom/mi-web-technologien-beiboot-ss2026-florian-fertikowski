@@ -72,8 +72,10 @@ export function useGestureRecognizer<C extends string>(
     recognizerRef.current?.setActiveContext(activeContext);
   }, [activeContext]);
 
-  const [pointingPosition, setPointingPosition] =
-    useState<{ x: number; y: number } | null>(null);
+  const [pointingPosition, setPointingPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const lastPointingRef = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
@@ -88,9 +90,7 @@ export function useGestureRecognizer<C extends string>(
     const unsubscribes: Array<() => void> = [];
 
     // Subscribe to whatever event types the consumer declared
-    const eventTypes = Object.keys(
-      handlers ?? {},
-    ) as GestureEventType[];
+    const eventTypes = Object.keys(handlers ?? {}) as GestureEventType[];
 
     for (const type of eventTypes) {
       const contexts = handlers?.[type]?.contexts;
@@ -139,9 +139,7 @@ export function useGestureRecognizer<C extends string>(
     if (!recognizer) return;
     const frameState = recognizer.update(input, timestamp);
 
-    const pinchState = frameState.detectors["pinch"] as
-      | PinchState
-      | undefined;
+    const pinchState = frameState.detectors["pinch"] as PinchState | undefined;
     const progress = pinchState?.hands[0]?.progress ?? 0;
 
     if (Math.abs(progress - lastPinchProgressRef.current) > 0.02) {

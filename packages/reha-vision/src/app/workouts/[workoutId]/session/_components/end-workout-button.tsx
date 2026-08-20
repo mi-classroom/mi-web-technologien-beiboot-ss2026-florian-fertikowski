@@ -8,6 +8,7 @@ interface EndWorkoutButtonProps {
   onClick: () => void;
   demoVideoSrc?: string;
   isDemoing?: boolean;
+  className?: string;
 }
 
 /**
@@ -19,6 +20,7 @@ export function EndWorkoutButton({
   onClick,
   demoVideoSrc,
   isDemoing = false,
+  className,
 }: EndWorkoutButtonProps) {
   const showDemo = isDemoing && !!demoVideoSrc;
 
@@ -28,7 +30,8 @@ export function EndWorkoutButton({
       variant="destructive"
       onClick={onClick}
       className={cn(
-        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-300 size-16 md:size-25",
+        "relative z-10 bg-destructive/80 hover:bg-destructive/60 flex shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-300 size-16 md:size-25",
+        className,
       )}
     >
       <span
@@ -45,7 +48,7 @@ export function EndWorkoutButton({
             muted
             loop
             playsInline
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover invert"
           />
         ) : (
           <Square className="size-6 text-white fill-background md:size-8" />

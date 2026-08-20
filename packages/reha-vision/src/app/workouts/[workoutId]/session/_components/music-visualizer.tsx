@@ -98,7 +98,7 @@ export function MusicVisualizer({ audioRef, active }: MusicVisualizerProps) {
         for (let i = 0; i < BAR_COUNT; i++) {
           const value = data[Math.floor((i / BAR_COUNT) * data.length)] ?? 0;
           const barHeight = (value / 255) * height;
-          ctx.fillStyle = "rgba(255,255,255,0.55)";
+          ctx.fillStyle = "rgba(129, 129, 129, 0.8)";
           ctx.fillRect(
             i * barWidth + 1,
             height - barHeight,
@@ -121,7 +121,7 @@ export function MusicVisualizer({ audioRef, active }: MusicVisualizerProps) {
       width={640}
       height={64}
       aria-hidden="true"
-      className="pointer-events-none absolute bottom-8 left-1/2 h-16 w-[min(90%,36rem)] -translate-x-1/2 opacity-70"
+      className="pointer-events-none absolute bottom-0 left-1/2 h-16 w-[min(90%,36rem)] -translate-x-1/2 opacity-10"
     />
   );
 }

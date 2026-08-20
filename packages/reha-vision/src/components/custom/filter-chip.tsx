@@ -3,7 +3,7 @@ import React from "react";
 
 /**
  * Reusable Button Component used as Filtering Chip on the main page
-* */
+ * */
 export function FilterChip({
   active,
   onClick,

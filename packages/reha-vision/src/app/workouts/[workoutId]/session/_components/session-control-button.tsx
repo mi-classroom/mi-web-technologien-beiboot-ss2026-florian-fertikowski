@@ -65,9 +65,8 @@ export function SessionControlButton({
       aria-label={label}
       className={cn(
         "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full",
-        "border border-foreground/15 bg-foreground/5 hover:bg-primary text-foreground hover:text-background backdrop-blur-sm",
-        "transition-all duration-300",
-        showDemo ? "size-32 md:size-48" : "size-24 md:size-36",
+        "border border-foreground/15 bg-primary hover:bg-primary/80 text-white backdrop-blur-sm",
+        "transition-all duration-300 size-24 md:size-36",
       )}
     >
       {showDemo ? (
@@ -78,7 +77,7 @@ export function SessionControlButton({
           muted
           loop
           playsInline
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover invert"
         />
       ) : (
         <>
@@ -89,7 +88,7 @@ export function SessionControlButton({
                 cy="50"
                 r={RADIUS}
                 strokeWidth={4}
-                className="stroke-primary/15"
+                className="stroke-white/15"
                 fill="none"
               />
               <circle
@@ -98,7 +97,7 @@ export function SessionControlButton({
                 r={RADIUS}
                 strokeWidth={4}
                 strokeLinecap="round"
-                className="stroke-primary transition-[stroke-dashoffset] duration-200"
+                className="stroke-white transition-[stroke-dashoffset] duration-200"
                 fill="none"
                 strokeDasharray={CIRCUMFERENCE}
                 strokeDashoffset={CIRCUMFERENCE * (1 - progress)}

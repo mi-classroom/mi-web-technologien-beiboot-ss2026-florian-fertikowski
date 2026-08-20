@@ -1,4 +1,6 @@
 "use client";
+
+import { cn } from "@/lib/utils";
 import type { CameraStatus } from "@/hooks/use-webcam";
 
 interface CameraStatusPanelProps {
@@ -13,6 +15,13 @@ const STATUS_TEXT: Record<CameraStatus, string> = {
   running: "Kamera aktiv",
   error: "Kamera-Fehler",
   disabled: "Kamera deaktiviert",
+};
+
+const STATUS_DOT_COLOR: Record<CameraStatus, string> = {
+  starting: "bg-amber-400",
+  running: "bg-emerald-400",
+  error: "bg-red-500",
+  disabled: "bg-white/40",
 };
 
 const STATUS_ACTION: Record<
@@ -31,7 +40,6 @@ const STATUS_ACTION: Record<
  */
 export function CameraStatusPanel({
   status,
-  error,
   onEnable,
   onDisable,
 }: CameraStatusPanelProps) {
@@ -39,12 +47,12 @@ export function CameraStatusPanel({
   const handleClick = action.kind === "enable" ? onEnable : onDisable;
 
   return (
-    <div className="absolute top-6 left-1/2 flex max-w-[calc(100%-3rem)] -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-xs text-white/80 backdrop-blur-sm md:text-sm">
-      <span className="truncate">
-        {status === "error" && error
-          ? `${STATUS_TEXT.error}: ${error}`
-          : STATUS_TEXT[status]}
-      </span>
+    <div className="flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-xs whitespace-nowrap text-white/80 backdrop-blur-sm md:text-sm">
+      <span
+        className={cn("size-2 shrink-0 rounded-full", STATUS_DOT_COLOR[status])}
+        aria-hidden="true"
+      />
+      <span>{STATUS_TEXT[status]}</span>
       <button
         type="button"
         onClick={handleClick}

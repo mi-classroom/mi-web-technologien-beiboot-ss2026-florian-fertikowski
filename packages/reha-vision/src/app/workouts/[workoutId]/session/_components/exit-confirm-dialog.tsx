@@ -8,6 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
@@ -94,6 +95,7 @@ export function ExitConfirmDialog({
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onCancel()}>
+      <DialogTrigger />
       <DialogContent showCloseButton={false} className="sm:max-w-sm">
         <DialogHeader className="items-center text-center">
           <DialogTitle>End this workout?</DialogTitle>
