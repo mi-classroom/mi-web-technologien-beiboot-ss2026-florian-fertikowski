@@ -35,7 +35,7 @@ export function NavArrowButton({
       onClick={onClick}
       aria-label={label}
       className={cn(
-        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-300 size-16 md:size-32",
+        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full transition-all duration-300 size-16 md:size-[clamp(4rem,5vw,8rem)]",
         className,
       )}
     >
@@ -50,9 +50,9 @@ export function NavArrowButton({
           className="h-full w-full object-cover"
         />
       ) : direction === "left" ? (
-        <ChevronLeft className="size-8 md:size-15" />
+        <ChevronLeft className="size-8 md:size-[clamp(2rem,2.344vw,3.75rem)]" />
       ) : (
-        <ChevronRight className="size-8 md:size-15" />
+        <ChevronRight className="size-8 md:size-[clamp(2rem,2.344vw,3.75rem)]" />
       )}
     </Button>
   );
