@@ -144,7 +144,7 @@ export function VolumeIndicator({
         {isDemoing && (
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -left-14 size-2.5 -translate-y-1/2 text-white/80"
+            className="pointer-events-none absolute -left-14 size-2.5 -translate-y-1/2 text-foreground"
             style={{ bottom: `${demoDotPosition * 100}%` }}
           >
             <Pointer className="size-6" />
