@@ -462,9 +462,7 @@ export function SessionView({ workoutId }: SessionViewProps) {
               <NavArrowButton
                 direction="left"
                 label={
-                  screen === "detail"
-                    ? "Previous exercise"
-                    : "Back to exercise"
+                  screen === "detail" ? "Previous exercise" : "Back to exercise"
                 }
                 onClick={handleLeftClick}
                 demoVideoSrc={gestureDemoVideos.swipeRight}
@@ -522,9 +520,7 @@ export function SessionView({ workoutId }: SessionViewProps) {
               <NavArrowButton
                 direction="left"
                 label={
-                  screen === "detail"
-                    ? "Previous exercise"
-                    : "Back to exercise"
+                  screen === "detail" ? "Previous exercise" : "Back to exercise"
                 }
                 onClick={handleLeftClick}
                 demoVideoSrc={gestureDemoVideos.swipeRight}

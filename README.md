@@ -12,8 +12,9 @@ least one real application on top of it.
 **Techstack:**
 
 - **Library:** Typescript, MediaPipe Tasks Vision
-- **Vision-Project:** Typescript, React, Next.js, Tailwind, Framer Motion
-- **Deployment:** Cloudflare Pages + R2
+- **Vision-Project:** Typescript, React, Next.js, Tailwind, Shadcn, Framer Motion
+
+For media licensing: see [`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
 
 ## About this Project
 
@@ -61,8 +62,10 @@ spanning the whole application, freely switchable at any time; a desktop-style m
 mode, as two equally broad lenses on the same app.
 
 That symmetry didn't hold up. Big Picture Mode/Gesture Control isn't a second, general-purpose way to do everything the
-app does, and it shouldn't be. It should address the one area where the actual pain point arrives: the workout session itself, the
-moment someone has stepped back from the screen, to do his exercise. Everything else, browsing workouts, reordering and selecting exercises, has no
+app does, and it shouldn't be. It should address the one area where the actual pain point arrives: the workout session
+itself, the
+moment someone has stepped back from the screen, to do his exercise. Everything else, browsing workouts, reordering and
+selecting exercises, has no
 reason to be anything other than an ordinary desktop interface. What emerged is not two co-equal modes but a primarily
 desktop application with one deliberately narrow gesture-controlled mode, scoped to exactly where it's needed:
 
@@ -71,8 +74,10 @@ desktop application with one deliberately narrow gesture-controlled mode, scoped
 - **Big Picture Mode** — the workout session itself, controlled by hand gestures, designed to be usable from a few steps
   back from the screen. Reached by explicitly starting a workout, not through any general mode switch.
 
-Every gesture in Big Picture Mode also has a full click/keyboard equivalent. Gesture control is at its core an alternative input
-method, not a replacement/requirement. This keeps the app usable without a working camera, and for anyone who'd rather not use
+Every gesture in Big Picture Mode also has a full click/keyboard equivalent. Gesture control is at its core an
+alternative input
+method, not a replacement/requirement. This keeps the app usable without a working camera, and for anyone who'd rather
+not use
 gestures at all.
 
 Other notable piece: a rotating on-screen demo that teaches each gesture in place (shown at the exact control it
@@ -158,7 +163,7 @@ The full walkthrough of build settings, required environment variables, and R2/C
 ## Documentation
 
 | Document                                                           | Description                                                                                                                                                                                    |
-|--------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [`packages/gesture-lib/README.md`](packages/gesture-lib/README.md) | Library API reference, quickstart, and the guide for writing custom gestures                                                                                                                   |
 | [`packages/reha-vision/README.md`](packages/reha-vision/README.md) | Setup, environment variables, and deployment for the main application                                                                                                                          |
 | [`docs/observations.md`](docs/observations.md)                     | Raw MediaPipe detection-quality notes from the Issue #1 spike — distance limits, jitter, performance across Hand/Pose/Gesture modes — that shaped the library's smoothing and threshold design |
@@ -168,9 +173,18 @@ The full walkthrough of build settings, required environment variables, and R2/C
 | [`docs/adr/`](docs/adr/)                                           | Architecture Decision Records — the reasoning behind key technical and design decisions                                                                                                        |
 | [`docs/issue-5-reflection.md`](docs/issue-5-reflection.md)         | Reflection on the Vision Application (Issue #5) _(to be added)_                                                                                                                                |
 
-## License & Author
+## License
 
-Built by **Florian Fertikowski** for the _Web Technologies_ module ("Beiboot" project) at **TH Köln**, supervised by *
-_Prof. Christian Noss_*.
+Source code is MIT-licensed, see [`LICENSE`](LICENSE). Media assets (exercise videos, gesture-demo clips, background
+music) are licensed stock content and are **not** covered by that license, see [
+`THIRD_PARTY_LICENSES.md`](THIRD_PARTY_LICENSES.md).
 
-Created for academic evaluation; no specific open-source license is applied.
+## Author
+
+Built by **Florian Fertikowski** for the _Web Technologies_ module ("Beiboot" project) at **TH Köln**, Summer Semester
+2026, supervised by **Prof. Christian Noss**. Created as a student assignment for academic evaluation.
+
+## AI-Assisted Development
+
+AI assistance (Claude, Anthropic) was used throughout this project's development, for implementation, debugging, and
+documentation.
