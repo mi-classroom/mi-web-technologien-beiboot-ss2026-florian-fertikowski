@@ -155,9 +155,6 @@ file is required just to get it running locally.
 and thumbnail assets served
 from a [Cloudflare R2 bucket](https://www.cloudflare.com/products/r2/).
 
-The full walkthrough of build settings, required environment variables, and R2/CORS configuration lives in [
-`packages/reha-vision/README.md`](packages/reha-vision/README.md).
-
 - **Live demo:** [beiboot-ss-2026.florianfertikowski.com](https://beiboot-ss-2026.florianfertikowski.com/)
 
 ## Documentation

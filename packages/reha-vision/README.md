@@ -55,7 +55,3 @@ Exercise videos, thumbnails, and gesture-demo clips are static files hosted on C
 
 Exercise and workout metadata (names, descriptions, durations, which thumbnail represents which workout) live in code,
 not a CMS — see `src/data/exercises.ts` and `src/data/workouts.ts`.
-
-## Deployment
-
-TODO
