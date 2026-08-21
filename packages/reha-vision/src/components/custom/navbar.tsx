@@ -49,7 +49,11 @@ export default function Navbar() {
           role="menuItem"
           className={cn("order-4 md:order-2 md:ml-auto")}
         >
-          <NavigationMenuLink render={<Link href="/about" />}>
+          <NavigationMenuLink
+            render={
+              <a href="https://github.com/mi-classroom/mi-web-technologien-beiboot-ss2026-florian-fertikowski#beiboot-project-2026" />
+            }
+          >
             <span>About</span>
           </NavigationMenuLink>
         </NavigationMenuItem>

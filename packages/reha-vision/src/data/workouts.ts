@@ -49,8 +49,9 @@ export interface Workout {
 export const workouts: Workout[] = [
   {
     id: "full-set",
-    name: "Full Set",
-    description: "All ten, standing through floor — the complete routine.",
+    name: "Stretching 1",
+    description:
+      "Leichtes Stretching Workout für Mobilität und einen gesunden Körper.",
     exerciseIds: [
       "standing-windmill",
       "alternating-lunge-stretch",

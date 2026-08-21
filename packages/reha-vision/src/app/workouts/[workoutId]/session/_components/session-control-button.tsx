@@ -47,7 +47,9 @@ export function SessionControlButton({
 }: SessionControlButtonProps) {
   const [hovered, setHovered] = useState(false);
   const showPauseIcon = state === "running" && hovered;
-  const showDemo = isDemoing && state === "idle" && !!demoVideoSrc;
+  const showDemo =
+    isDemoing && state === "idle" && progress === 0 && !!demoVideoSrc;
+  const showRing = state === "running" || state === "paused" || progress > 0;
 
   const label =
     state === "idle"
@@ -81,7 +83,7 @@ export function SessionControlButton({
         />
       ) : (
         <>
-          {(state === "running" || state === "paused") && (
+          {showRing && (
             <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
               <circle
                 cx="50"
