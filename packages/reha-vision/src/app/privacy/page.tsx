@@ -50,7 +50,7 @@ export default function DatenschutzPage() {
       <section className="flex flex-col gap-2 text-sm leading-relaxed">
         <h2 className="font-medium">Hosting und Server-Logdateien</h2>
         <p>
-          Diese Website wird über Cloudflare Pages ausgeliefert. Beim Aufruf der
+          Diese Website wird über Github Pages ausgeliefert. Beim Aufruf der
           Seite verarbeitet der Hosting-Anbieter automatisch technische
           Verbindungsdaten (u. a. IP-Adresse, Datum und Uhrzeit des Zugriffs,
           aufgerufene Seite, verwendeter Browser). Diese Daten fallen technisch
