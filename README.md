@@ -151,9 +151,7 @@ file is required just to get it running locally.
 
 ## Deployment
 
-`reha-vision` is deployed as a static export via [Cloudflare Pages](https://pages.cloudflare.com/), with video, audio,
-and thumbnail assets served
-from a [Cloudflare R2 bucket](https://www.cloudflare.com/products/r2/).
+`reha-vision` is deployed as a static export via **GitHub Pages** (built and published through a GitHub Actions workflow), with video, audio, and thumbnail assets served from a [Cloudflare R2 bucket](https://www.cloudflare.com/products/r2/).
 
 - **Live demo:** [beiboot-ss-2026.florianfertikowski.com](https://beiboot-ss-2026.florianfertikowski.com/)
 
